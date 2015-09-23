@@ -9,6 +9,7 @@
 
 
 // Apply the java plugin to add support for Java
+apply plugin: 'eclipse'
 apply plugin: 'java'
 
 // In this section you declare where to find the dependencies of your project
