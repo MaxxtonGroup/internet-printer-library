@@ -3,8 +3,8 @@ This is an easy to use Java library for controlling a printer over IP using LPR.
 Without any other dependencies.
 ## Installation
 1. Download or clone the repository
-2. Add ```/dist/LPR_4_Java.jar``` to your project
-3. optional: add the src and javadocs to your project as well
+2. Add ```/build/libs/lpr4java.jar``` to your project
+3. optional: add the ```src``` to your project as well
  
 ## Get started
  1. Define your printer
