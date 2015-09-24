@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
  *
  * @see PrintJobScheduler
  *
- * @author Hermans.s
+ * @author Hermans.S
  * @copyright Maxxton 2015
  */
 public class JobSchedulerTest
@@ -71,7 +71,7 @@ public class JobSchedulerTest
     final ArrayList<Boolean> report = new ArrayList();
 
     //Create test job
-    TestJob testJob = new TestJob(printer1)
+    AbstractPrintJob testJob = new AbstractPrintJob(printer1)
     {
       @Override
       public void print() throws LPRException
@@ -109,7 +109,7 @@ public class JobSchedulerTest
     final ArrayList<Boolean> report = new ArrayList();
 
     //Create first job
-    TestJob testJob1 = new TestJob(printer1)
+    AbstractPrintJob testJob1 = new AbstractPrintJob(printer1)
     {
       @Override
       public void print() throws LPRException
@@ -134,7 +134,7 @@ public class JobSchedulerTest
     };
 
     //Create second job
-    TestJob testJob2 = new TestJob(printer1)
+    AbstractPrintJob testJob2 = new AbstractPrintJob(printer1)
     {
       @Override
       public void print() throws LPRException
@@ -184,7 +184,7 @@ public class JobSchedulerTest
     final ArrayList<Boolean> report = new ArrayList();
 
     //Create first job
-    TestJob testJob1 = new TestJob(printer1)
+    AbstractPrintJob testJob1 = new AbstractPrintJob(printer1)
     {
       @Override
       public void print() throws LPRException
@@ -215,7 +215,7 @@ public class JobSchedulerTest
     };
 
     //Create second job for different printer
-    TestJob testJob2 = new TestJob(printer2)
+    AbstractPrintJob testJob2 = new AbstractPrintJob(printer2)
     {
       @Override
       public void print() throws LPRException

@@ -68,7 +68,7 @@ public class PrintJob implements IPrintJob
     try
     {
       // Connect to printer
-      Socket printerConnection = connect();
+      PrinterConnection printerConnection = connect();
       BufferedReader printerIn = new BufferedReader(new InputStreamReader(printerConnection.getInputStream()));
       DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
 
@@ -79,9 +79,9 @@ public class PrintJob implements IPrintJob
       byte[] rawDocument = document.getRaw();
 
       // start sending
-      printerOut.write(LPRCommand.STX.getCode());
+      printerOut.write(02);
       printerOut.writeBytes("1");
-      printerOut.write(LPRCommand.LF.getCode());
+      printerOut.write(LPRCommand.LF.getCodes());
       printerOut.flush();
 
       if (printerIn.read() != 0)
@@ -90,11 +90,11 @@ public class PrintJob implements IPrintJob
       }
 
       // Write control file
-      printerOut.write(LPRCommand.STX.getCode());
+      printerOut.write(02);
       printerOut.writeBytes(String.valueOf(controlFile.length()));
-      printerOut.write(LPRCommand.SPACE.getCode());
-      printerOut.writeBytes("cfA" + jobId + user);
-      printerOut.write(LPRCommand.LF.getCode());
+      printerOut.write(LPRCommand.SPACE.getCodes());
+      printerOut.writeBytes("cfA" + jobId + hostname);
+      printerOut.write(LPRCommand.LF.getCodes());
       printerOut.flush();
 
       if (printerIn.read() != 0)
@@ -103,7 +103,7 @@ public class PrintJob implements IPrintJob
       }
 
       printerOut.writeBytes(controlFile);
-      printerOut.write(LPRCommand.NULL.getCode());
+      printerOut.write(LPRCommand.NULL.getCodes());
       printerOut.flush();
 
       if (printerIn.read() != 0)
@@ -112,12 +112,12 @@ public class PrintJob implements IPrintJob
       }
 
       // Write data file
-      printerOut.write(LPRCommand.ETX.getCode());
+      printerOut.write(03);
 
       printerOut.writeBytes(String.valueOf(rawDocument.length));
-      printerOut.write(LPRCommand.SPACE.getCode());
-      printerOut.writeBytes("dfA" + jobId + user);
-      printerOut.write(LPRCommand.LF.getCode());
+      printerOut.write(LPRCommand.SPACE.getCodes());
+      printerOut.writeBytes("dfA" + jobId + hostname);
+      printerOut.write(LPRCommand.LF.getCodes());
       printerOut.flush();
 
       if (printerIn.read() != 0)
@@ -191,18 +191,18 @@ public class PrintJob implements IPrintJob
   /**
    * Connect to printer
    * 
-   * @return socket connection
+   * @return printer connection
    * @throws LPRException
    *           connection error
    */
-  private Socket connect() throws LPRException
+  protected PrinterConnection connect() throws LPRException
   {
     try
     {
       LOG.info("Connect to " + printer.getHost() + ":" + printer.getPort());
       Socket socket = new Socket(printer.getHost(), printer.getPort());
       socket.setSoTimeout(printer.getTimeout());
-      return socket;
+      return new PrinterConnection(socket);
     }
     catch (IOException e)
     {
@@ -213,14 +213,14 @@ public class PrintJob implements IPrintJob
   /**
    * Close printer connection
    * 
-   * @param socket
+   * @param connection
    *          printer connection
    */
-  private void close(Socket socket)
+  protected void close(PrinterConnection connection)
   {
     try
     {
-      socket.close();
+      connection.close();
     }
     catch (Exception e)
     {
@@ -252,7 +252,7 @@ public class PrintJob implements IPrintJob
       controlFile += ("ldfA" + jobId + user + "\n");
     }
 
-    controlFile += ("N" + document + "\n");
+    controlFile += ("N" + document.getDocumentName() + "\n");
 
     return controlFile;
   }
@@ -267,6 +267,18 @@ public class PrintJob implements IPrintJob
   public LPRPrinter getPrinter()
   {
     return printer;
+  }
+  
+  public int getJobId(){
+    return Integer.parseInt(jobId);
+  }
+  
+  public String getUser(){
+    return user;
+  }
+  
+  public String getHostname(){
+    return hostname;
   }
 
   /**

@@ -21,12 +21,12 @@ public class LPRDocument
 {
 
   private final String documentName;
+  private final ByteArrayOutputStream buffer;
+  private final DataOutputStream dataStream;
+  
   private int copies = 1;
-
   private CharacterSet charset = CharacterSet.NONE;
 
-  private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-  private DataOutputStream dataStream = new DataOutputStream(buffer);
 
   /**
    * Create new LPR Document
@@ -36,6 +36,8 @@ public class LPRDocument
    */
   public LPRDocument(String documentName)
   {
+    this.buffer = new ByteArrayOutputStream();
+    this.dataStream = new DataOutputStream(buffer);
     this.documentName = documentName;
   }
 
@@ -106,7 +108,7 @@ public class LPRDocument
     {
       try
       {
-        dataStream.write(command.getCode());
+        dataStream.write(command.getCodes());
       }
       catch (IOException ex)
       {
@@ -160,7 +162,7 @@ public class LPRDocument
   /**
    * Insert linebreak
    */
-  public void insertLineBreak()
+  public void insertLineFeed()
   {
     insert(LPRCommand.LF);
   }
@@ -202,7 +204,8 @@ public class LPRDocument
   }
 
   /**
-   * Insert point for cutting the paper
+   * Insert point for cutting the paper.
+   * Feed the paper for the cutting point by 6 Line Feeds
    */
   public void insertPaperCut()
   {
