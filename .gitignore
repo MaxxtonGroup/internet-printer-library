@@ -1,7 +1,8 @@
 /.gradle/
 /.nb-gradle/
 /build/
-/.settings.gradle/
+/settings.gradle
+/.nb-gradle-properties
 /.gradle/2.7/taskArtifacts/cache.properties
 /.gradle/2.7/taskArtifacts/cache.properties.lock
 /.gradle/2.7/taskArtifacts/fileHashes.bin
