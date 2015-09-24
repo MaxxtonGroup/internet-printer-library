@@ -1,5 +1,4 @@
-/nbproject/
-/dist/
-/build/
 /.gradle/
-/.settings/
+/.nb-gradle/
+/build/
+/.settings.gradle/
