@@ -89,7 +89,7 @@ public class PrintJobScheduler
           IPrintJob printJob = printQueue.get(0);
           try
           {
-            printJob.print();
+            printJob.run();
           }
           catch (LPRException ex)
           {
