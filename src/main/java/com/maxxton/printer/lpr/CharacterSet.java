@@ -5,11 +5,11 @@ import java.nio.charset.Charset;
 
 /**
  * CharacterSet for printing 
+ * https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=71
  * 
  * @author hermans.s
  * Copyright Maxxton 2015
  * 
- * @see https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=71
  * @see java.nio.charset.Charset
  */
 public enum CharacterSet

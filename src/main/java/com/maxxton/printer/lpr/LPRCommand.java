@@ -3,11 +3,11 @@ package com.maxxton.printer.lpr;
 
 /**
  * ASCII characters to create LPRCommands
+ * https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=72
  * 
  * @author Hermans.S
  * Copyright Maxxton 2015
  * 
- * @see https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=72
  */
 public enum LPRCommand
 {
