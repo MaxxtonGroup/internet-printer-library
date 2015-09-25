@@ -7,7 +7,7 @@ import java.nio.charset.Charset;
  * CharacterSet for printing 
  * 
  * @author hermans.s
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  * 
  * @see https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=71
  * @see java.nio.charset.Charset

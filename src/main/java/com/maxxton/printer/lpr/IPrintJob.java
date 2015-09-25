@@ -5,7 +5,7 @@ package com.maxxton.printer.lpr;
  * Interface for PrintJobs
  * 
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  */
 public interface IPrintJob
 {

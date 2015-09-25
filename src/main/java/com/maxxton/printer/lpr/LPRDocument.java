@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
  * and text. These commands and text are send to the printer in a PrintJob.
  *
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  */
 public class LPRDocument
 {

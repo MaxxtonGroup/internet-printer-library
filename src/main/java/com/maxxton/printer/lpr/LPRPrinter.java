@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Printer object which contains information about the printer
  * 
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  */
 public class LPRPrinter
 {

@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
  * This buffer can be used to analyse the data that is send to the printer.
  * 
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  */
 public class BufferedPrintJob extends PrintJob
 {

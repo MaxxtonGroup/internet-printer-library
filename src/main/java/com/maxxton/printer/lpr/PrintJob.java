@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * 4. Close connection
  * 
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  */
 public class PrintJob implements IPrintJob
 {

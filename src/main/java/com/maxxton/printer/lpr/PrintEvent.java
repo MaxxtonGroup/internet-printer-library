@@ -5,7 +5,7 @@ package com.maxxton.printer.lpr;
  * Event for when the printer is done printing.
  * 
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  */
 public class PrintEvent
 {

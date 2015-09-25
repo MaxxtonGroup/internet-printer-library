@@ -5,7 +5,7 @@ package com.maxxton.printer.lpr;
  * This Exception is throwen during printing
  * 
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  * 
  * @see PrintJob#print()
  */

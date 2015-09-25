@@ -10,7 +10,7 @@ import java.net.Socket;
  * Connection with the printer
  * 
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  */
 public class PrinterConnection implements Closeable
 {

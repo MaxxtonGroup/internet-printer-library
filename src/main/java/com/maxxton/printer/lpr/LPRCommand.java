@@ -5,7 +5,7 @@ package com.maxxton.printer.lpr;
  * ASCII characters to create LPRCommands
  * 
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  * 
  * @see https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=72
  */

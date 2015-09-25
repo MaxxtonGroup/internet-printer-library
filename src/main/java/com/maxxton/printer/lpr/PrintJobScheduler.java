@@ -12,7 +12,7 @@ import java.util.logging.Level;
  * This scheduler prevent printers to receive more than one job at the time.
  * 
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  */
 public class PrintJobScheduler
 {

@@ -7,7 +7,7 @@ package com.maxxton.printer.lpr;
  * @see JobSchedulerTest
  *
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  */
 public abstract class AbstractPrintJob implements IPrintJob{
     

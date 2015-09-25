@@ -17,8 +17,9 @@ import static org.junit.Assert.*;
  *
  * @see PrintJob
  * @see https://www.ietf.org/rfc/rfc1179.txt
+ * 
  * @author Hermans.s
- * @copyright Maxxton 2015
+ * Copyright  Maxxton 2015
  */
 public class PrintJobTest
 {

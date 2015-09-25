@@ -35,7 +35,7 @@ import java.io.IOException;
  * 
  * 
  * @author Hermans.S
- * @copyright Maxxton 2015
+ * Copyright Maxxton 2015
  */
 public class PrintExample
 {
