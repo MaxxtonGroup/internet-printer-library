@@ -126,7 +126,7 @@ public class PrintJobTest
   public void checkControlFileAndDataFile() throws LPRException, IOException
   {
     //Create document
-    String documentText = "hello worldŒ";
+    String documentText = "hello world";
     LPRDocument document = new LPRDocument("test document");
     document.insert(documentText);
 
