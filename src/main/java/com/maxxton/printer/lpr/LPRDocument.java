@@ -10,9 +10,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 /**
- * PrintDocument is the document to be printed.
- * This document is build up with LPRCommands and text.
- * These commands and text are send to the printer in a PrintJob.
+ * PrintDocument is the document to be printed. This document is build up with LPRCommands
+ * and text. These commands and text are send to the printer in a PrintJob.
  *
  * @author Hermans.S
  * @copyright Maxxton 2015
@@ -23,16 +22,14 @@ public class LPRDocument
   private final String documentName;
   private final ByteArrayOutputStream buffer;
   private final DataOutputStream dataStream;
-  
+
   private int copies = 1;
   private CharacterSet charset = CharacterSet.NONE;
-
 
   /**
    * Create new LPR Document
    *
-   * @param documentName
-   *          Name of the document
+   * @param documentName Name of the document
    */
   public LPRDocument(String documentName)
   {
@@ -44,16 +41,14 @@ public class LPRDocument
   /**
    * Insert Raw bytes
    *
-   * @param raw
-   *          raw data
+   * @param raw raw data
    */
   public void insert(byte... raw)
   {
     try
     {
       dataStream.write(raw);
-    }
-    catch (IOException ex)
+    } catch (IOException ex)
     {
     }
   }
@@ -61,20 +56,16 @@ public class LPRDocument
   /**
    * Insert Raw bytes
    *
-   * @param raw
-   *          bytes
-   * @param i
-   *          start point
-   * @param l
-   *          length
+   * @param raw bytes
+   * @param i start point
+   * @param l length
    */
   public void insert(byte[] raw, int i, int l)
   {
     try
     {
       dataStream.write(raw, i, l);
-    }
-    catch (IOException ex)
+    } catch (IOException ex)
     {
     }
   }
@@ -82,16 +73,15 @@ public class LPRDocument
   /**
    * Insert text as string
    *
-   * @param string
-   *          text
+   * @param string text
    */
   public void insert(String string)
   {
     try
     {
-      dataStream.write(string.getBytes(charset.getCharset()));
-    }
-    catch (IOException ex)
+      byte[] bytes = string.getBytes(charset.getCharset());
+      dataStream.write(bytes);
+    } catch (IOException ex)
     {
     }
   }
@@ -99,8 +89,7 @@ public class LPRDocument
   /**
    * Insert LPRCommands
    *
-   * @param commands
-   *          LPRCommand
+   * @param commands LPRCommand
    */
   public void insert(LPRCommand... commands)
   {
@@ -109,15 +98,14 @@ public class LPRDocument
       try
       {
         dataStream.write(command.getCodes());
-      }
-      catch (IOException ex)
+      } catch (IOException ex)
       {
       }
     }
   }
 
   /**
-   * Insert from an inputstream and filter for special characters
+   * Insert from an inputstream
    *
    * @param in
    * @throws IOException
@@ -134,16 +122,14 @@ public class LPRDocument
     try
     {
       in.close();
-    }
-    catch (IOException e)
+    } catch (IOException e)
     {
     }
     String string = new String(bytes.toByteArray());
     try
     {
       dataStream.write(string.getBytes(charset.getCharset()));
-    }
-    catch (IOException ex)
+    } catch (IOException ex)
     {
     }
   }
@@ -177,9 +163,8 @@ public class LPRDocument
 
   /**
    * Change the CharacterSet for the following data to be inserted
-   * 
-   * @param charset
-   *          the new CharacterSet
+   *
+   * @param charset the new CharacterSet
    * @throws java.io.UnsupportedEncodingException
    */
   public void insertCharacterset(CharacterSet charset) throws UnsupportedEncodingException
@@ -195,7 +180,7 @@ public class LPRDocument
 
   /**
    * Get the current characterset
-   * 
+   *
    * @return current characterset
    */
   public CharacterSet getCurrentCharacterset()
@@ -204,8 +189,8 @@ public class LPRDocument
   }
 
   /**
-   * Insert point for cutting the paper.
-   * Feed the paper for the cutting point by 6 Line Feeds
+   * Insert point for cutting the paper. Feed the paper for the cutting point by 6 Line
+   * Feeds
    */
   public void insertPaperCut()
   {
@@ -215,8 +200,7 @@ public class LPRDocument
   /**
    * Set amount of copies
    *
-   * @param copies
-   *          amount of copies
+   * @param copies amount of copies
    */
   public void setCopies(int copies)
   {

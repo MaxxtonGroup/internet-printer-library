@@ -1,6 +1,7 @@
 package com.maxxton.printer.lpr;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -68,7 +69,7 @@ public class JobSchedulerTest
   @Test
   public void executeJob()
   {
-    final ArrayList<Boolean> report = new ArrayList();
+    final List<Boolean> report = new ArrayList();
 
     //Create test job
     AbstractPrintJob testJob = new AbstractPrintJob(printer1)
@@ -106,7 +107,7 @@ public class JobSchedulerTest
   @Test
   public void executeTwoJobs()
   {
-    final ArrayList<Boolean> report = new ArrayList();
+    final List<Boolean> report = new ArrayList();
 
     //Create first job
     AbstractPrintJob testJob1 = new AbstractPrintJob(printer1)
@@ -181,7 +182,7 @@ public class JobSchedulerTest
   @Test
   public void executeTwoJobsForTwoPrinters()
   {
-    final ArrayList<Boolean> report = new ArrayList();
+    final List<Boolean> report = new ArrayList();
 
     //Create first job
     AbstractPrintJob testJob1 = new AbstractPrintJob(printer1)

@@ -126,8 +126,9 @@ public class PrintJobTest
   public void checkControlFileAndDataFile() throws LPRException, IOException
   {
     //Create document
+    String documentText = "hello worldŒ";
     LPRDocument document = new LPRDocument("test document");
-    document.insert("hello world");
+    document.insert(documentText);
 
     //Create print job
     BufferedPrintJob printJob = new BufferedPrintJob(printer, document);
@@ -247,7 +248,7 @@ public class PrintJobTest
     System.out.println("Data file: ");
     System.out.println(new String(dataFile));
 
-    assertEquals("hello world", new String(dataFile));
+    assertEquals(documentText, new String(dataFile));
 
     //Check ZERO byte
     assertEquals(LPRCommand.NULL.getCode(), bufferIn.read());
