@@ -29,7 +29,8 @@ public class PrintJob implements IPrintJob
   private final LPRPrinter printer;
   private final String jobId;
 
-  private boolean running = false;
+  private JobStatus status = JobStatus.PENDING;
+  private LPRException error = null;
   private String user = System.getProperty("user.name");
   private String hostname;
 
@@ -41,7 +42,7 @@ public class PrintJob implements IPrintJob
    * @param document
    *          Document to be printed
    */
-  protected PrintJob(LPRPrinter printer, LPRDocument document)
+  public PrintJob(LPRPrinter printer, LPRDocument document)
   {
     this.printer = printer;
     this.document = document;
@@ -62,8 +63,12 @@ public class PrintJob implements IPrintJob
    */
   public void print() throws LPRException
   {
+    if(!status.equals(JobStatus.PENDING)){
+      throw new LPRException("PrintJob is already started");
+    }
+    
     LOG.info("Start PrintJob '" + document.getDocumentName() + "'");
-    running = true;
+    status = JobStatus.RUNNING;
 
     try
     {
@@ -137,7 +142,6 @@ public class PrintJob implements IPrintJob
       printerOut.flush();
       close(printerConnection);
 
-      running = false;
       LOG.info("PrintJob Compleet!");
 
       // Trigger printSucceed event
@@ -153,11 +157,10 @@ public class PrintJob implements IPrintJob
       {
         LOG.log(Level.SEVERE, "printSucceed event failed", ee);
       }
+      status = JobStatus.FINISHED;
     }
     catch (Throwable e)
     {
-      running = false;
-
       // Convert Throwable into LPRException
       LPRException lprException;
       if (e instanceof LPRException)
@@ -182,6 +185,9 @@ public class PrintJob implements IPrintJob
       {
         LOG.log(Level.SEVERE, "printFailed event failed", ee);
       }
+      
+      error = lprException;
+      status = JobStatus.FAILED;
 
       // Throws Exception
       throw lprException;
@@ -256,11 +262,33 @@ public class PrintJob implements IPrintJob
 
     return controlFile;
   }
+  
+  public JobStatus getStatus(){
+    return status;
+  }
+  
+  /**
+   * Get the error if one occurred
+   * @return LPRException if one has occurred
+   */
+  public LPRException getError(){
+    return error;
+  }
+  
+  /**
+   * Wait for job to finish
+   * @throws InterruptedException 
+   */
+  public void waitFor() throws InterruptedException{
+    while(isRunning()){
+      Thread.sleep(20);
+    }
+  }
 
   @Override
   public boolean isRunning()
   {
-    return running;
+    return status == JobStatus.PENDING  || status == JobStatus.RUNNING;
   }
 
   @Override
@@ -296,6 +324,13 @@ public class PrintJob implements IPrintJob
       data = filler + data;
     }
     return data;
+  }
+  
+  /**
+   * Status for PrintJobs
+   */
+  public static enum JobStatus{
+    PENDING(), RUNNING(), FINISHED(), FAILED();
   }
 
 }

@@ -12,7 +12,10 @@ import java.util.ArrayList;
 public class LPRPrinter
 {
 
-  private static final int DEFAULT_LPR_PORT = 515;
+  /**
+   * Well known LPR port: 515
+   */
+  public static final int DEFAULT_LPR_PORT = 515;
 
   private final String host;
   private final int port;
@@ -51,11 +54,13 @@ public class LPRPrinter
    * 
    * @param document
    *          Document to be printed
+   * @return PrintJob
    */
-  public void print(LPRDocument document)
+  public PrintJob print(LPRDocument document)
   {
     PrintJob printJob = new PrintJob(this, document);
     PrintJobScheduler.schedule(printJob);
+    return printJob;
   }
 
   public String getHost()
