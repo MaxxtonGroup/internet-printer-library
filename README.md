@@ -1,25 +1,30 @@
-# LPR Library for Java
-This is an easy to use Java library for controlling a printer over IP using LPR.
-Without any other dependencies.
+# Internet Printer Library
+Light weight Java library for controlling printers over IP.
+This library supports the following print protocols:
+* RAW
+* LPR
+
+This library also supports LPR commands and FGL markup.
+
 ## Installation
 1. Download or clone the repository
 2. Build with gradle: ```gradle build```
-3. Add ```/build/libs/lpr4java.jar``` to your project
+3. Add ```/build/libs/ip-printer-library.jar``` to your project
 4. optional: add the ```src``` to your project as well
  
 ## Get started
  1. Define your printer
     ```
-    LPRPrinter printer = new LPRPrinter(ip, 515);
+    Printer printer = new Printer(ip);
     ```
  2. Create a document
     ```
-    LPRDocument document = new LPRDocument("document name");
+    PrintDocument document = new PrintDocument("document name");
     document.insert("hello world!");
     ```
  3. Print the document
     ```
-    printer.print(document);
+    printer.print(document, PrintProtocol.RAW);
     ```
 
 
