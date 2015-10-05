@@ -9,7 +9,7 @@ This library also supports LPR commands and FGL markup.
 ## Installation
 1. Download or clone the repository
 2. Build with gradle: ```gradle build```
-3. Add ```/build/libs/ip-printer-library.jar``` to your project
+3. Add ```/build/libs/internet-printer-library.jar``` to your project
 4. optional: add the ```src``` to your project as well
  
 ## Get started
