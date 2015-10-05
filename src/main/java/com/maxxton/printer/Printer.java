@@ -1,49 +1,40 @@
+package com.maxxton.printer;
 
-package com.maxxton.printer.lpr;
-
+import com.maxxton.printer.lpr.LPRPrintJob;
+import com.maxxton.printer.raw.RawPrintJob;
 import java.util.ArrayList;
 
 /**
  * Printer object which contains information about the printer
- * 
- * @author Hermans.S
- * Copyright Maxxton 2015
+ *
+ * @author Hermans.S Copyright Maxxton 2015
  */
-public class LPRPrinter
+public class Printer
 {
 
-  /**
-   * Well known LPR port: 515
-   */
-  public static final int DEFAULT_LPR_PORT = 515;
-
   private final String host;
-  private final int port;
+  private int port = -1;
   private int timeout = 5000;
 
   private ArrayList<PrinterListener> listeners = new ArrayList();
 
   /**
    * Create new LPRPrinter
-   * 
-   * @param host
-   *          Printer ip address
+   *
+   * @param host Printer ip address
    */
-  public LPRPrinter(String host)
+  public Printer(String host)
   {
     this.host = host;
-    this.port = DEFAULT_LPR_PORT;
   }
 
   /**
    * Create new LPRPrinter
-   * 
-   * @param host
-   *          Printer ip address
-   * @param port
-   *          Printer LPR port (default = 515)
+   *
+   * @param host Printer ip address
+   * @param port Printer port
    */
-  public LPRPrinter(String host, int port)
+  public Printer(String host, int port)
   {
     this.host = host;
     this.port = port;
@@ -51,14 +42,25 @@ public class LPRPrinter
 
   /**
    * Schedule PrintJob
-   * 
-   * @param document
-   *          Document to be printed
+   *
+   * @param document Document to be printed
+   * @param protocol Print protocol
    * @return PrintJob
    */
-  public PrintJob print(LPRDocument document)
+  public PrintJob print(PrintDocument document, PrintProtocol protocol)
   {
-    PrintJob printJob = new PrintJob(this, document);
+    PrintJob printJob;
+    if (protocol.equals(PrintProtocol.LPR))
+    {
+      printJob = new LPRPrintJob(this, document);
+    } else if (protocol.equals(PrintProtocol.RAW))
+    {
+      printJob = new RawPrintJob(this, document);
+    } else
+    {
+      throw new IllegalArgumentException("Unknown protocol");
+    }
+
     PrintJobScheduler.schedule(printJob);
     return printJob;
   }
@@ -93,7 +95,7 @@ public class LPRPrinter
     listeners.remove(listener);
   }
 
-  protected PrinterListener[] getPrintListeners()
+  public PrinterListener[] getPrintListeners()
   {
     return listeners.toArray(new PrinterListener[listeners.size()]);
   }

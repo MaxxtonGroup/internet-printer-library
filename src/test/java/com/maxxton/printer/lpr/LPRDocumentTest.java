@@ -48,45 +48,6 @@ public class LPRDocumentTest
 
   /**
    * Test if bytes are inserted correctly
-   */
-  @Test
-  public void insertBytes()
-  {
-    //Create new document
-    LPRDocument doc = new LPRDocument("test doc");
-    
-    //Insert bytes in the document
-    doc.insert((byte) 0, (byte) 50, (byte) 150);
-    
-    //Check if the raw output of the document is the same
-    byte[] raw = doc.getRaw();
-    assertEquals(raw.length, 3);
-    assertEquals(raw[0], (byte) 0);
-    assertEquals(raw[1], (byte) 50);
-    assertEquals(raw[2], (byte) 150);
-  }
-
-  /**
-   * Test if bytes are inserted correctly, with start position and length
-   */
-  @Test
-  public void insertBytesPosition()
-  {
-    //Create new document
-    LPRDocument doc = new LPRDocument("test doc");
-    
-    //Insert bytes in the document
-    byte[] data = new byte[]{(byte) 0, (byte) 50, (byte) 150};
-    doc.insert(data, 1, 1);
-    
-    //Check if the raw output of the document is the same
-    byte[] raw = doc.getRaw();
-    assertEquals(raw.length, 1);
-    assertEquals(raw[0], (byte) 50);
-  }
-
-  /**
-   * Test if bytes are inserted correctly
    * @throws java.io.IOException
    */
   @Test

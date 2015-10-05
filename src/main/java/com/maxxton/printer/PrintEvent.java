@@ -1,5 +1,5 @@
 
-package com.maxxton.printer.lpr;
+package com.maxxton.printer;
 
 /**
  * Event for when the printer is done printing.
@@ -10,11 +10,11 @@ package com.maxxton.printer.lpr;
 public class PrintEvent
 {
 
-  private final LPRPrinter printer;
-  private final LPRDocument document;
-  private final IPrintJob printJob;
+  private final Printer printer;
+  private final PrintDocument document;
+  private final PrintJob printJob;
 
-  public PrintEvent(LPRPrinter printer, LPRDocument document, IPrintJob printJob)
+  public PrintEvent(Printer printer, PrintDocument document, PrintJob printJob)
   {
     this.printer = printer;
     this.document = document;
@@ -22,17 +22,17 @@ public class PrintEvent
 
   }
 
-  public LPRPrinter getPrinter()
+  public Printer getPrinter()
   {
     return printer;
   }
 
-  public LPRDocument getDocument()
+  public PrintDocument getDocument()
   {
     return document;
   }
 
-  public IPrintJob getPrintJob()
+  public PrintJob getPrintJob()
   {
     return printJob;
   }

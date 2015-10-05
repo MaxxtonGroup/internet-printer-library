@@ -1,5 +1,7 @@
-package com.maxxton.printer.lpr;
+package com.maxxton.printer;
 
+import com.maxxton.printer.lpr.LPRCommand;
+import com.maxxton.printer.lpr.LPRDocument;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,7 +26,7 @@ import static org.junit.Assert.*;
 public class PrintJobTest
 {
 
-  private LPRPrinter printer;
+  private Printer printer;
 
   public PrintJobTest()
   {
@@ -43,7 +45,7 @@ public class PrintJobTest
   @Before
   public void setUp()
   {
-    printer = new LPRPrinter("localhost");
+    printer = new Printer("localhost");
   }
 
   @After
@@ -60,12 +62,12 @@ public class PrintJobTest
    *  +----+-------+----+
    *
    * @see https://www.ietf.org/rfc/rfc1179.txt
-   * @throws LPRException
+   * @throws PrintException
    * @throws UnsupportedEncodingException
    * @throws IOException
    */
   @Test
-  public void checkPrintJobHeader() throws LPRException, UnsupportedEncodingException, IOException
+  public void checkPrintJobHeader() throws PrintException, UnsupportedEncodingException, IOException
   {
     //Create document
     LPRDocument document = new LPRDocument("test document");
@@ -120,11 +122,11 @@ public class PrintJobTest
    * ...bytes...NULL
    * 
    * @see https://www.ietf.org/rfc/rfc1179.txt
-   * @throws com.maxxton.printer.lpr.LPRException
+   * @throws com.maxxton.printer.lpr.PrintException
    * @throws java.io.IOException
    */
   @Test
-  public void checkControlFileAndDataFile() throws LPRException, IOException
+  public void checkControlFileAndDataFile() throws PrintException, IOException
   {
     //Create document
     String documentText = "hello world";

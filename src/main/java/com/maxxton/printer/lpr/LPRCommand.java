@@ -42,7 +42,7 @@ public enum LPRCommand
    * Get ASCII bytes
    * @return ASCII bytes
    */
-  protected byte[] getCodes()
+  public byte[] getCodes()
   {
     return ascii;
   }
@@ -51,7 +51,7 @@ public enum LPRCommand
    * Get first ASCII byte
    * @return first ASCII byte
    */
-  protected byte getCode(){
+  public byte getCode(){
     return ascii[0];
   }
 

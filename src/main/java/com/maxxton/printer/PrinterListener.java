@@ -1,5 +1,5 @@
 
-package com.maxxton.printer.lpr;
+package com.maxxton.printer;
 
 /**
  * Listen for PrintEvent.
@@ -15,6 +15,6 @@ public interface PrinterListener
 
   public void printSucceed(PrintEvent event);
 
-  public void printFailed(PrintEvent event, LPRException e);
+  public void printFailed(PrintEvent event, PrintException e);
 
 }

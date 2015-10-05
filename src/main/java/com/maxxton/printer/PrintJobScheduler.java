@@ -1,6 +1,7 @@
 
-package com.maxxton.printer.lpr;
+package com.maxxton.printer;
 
+import com.maxxton.printer.lpr.LPRPrintJob;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class PrintJobScheduler
   /**
    * Queue of PrintJobs for each printer host
    */
-  private static final Map<String, ArrayList<IPrintJob>> PRINTJOBS = new HashMap();
+  private static final Map<String, ArrayList<PrintJob>> PRINTJOBS = new HashMap();
 
   private static final Map<String, Thread> THREADS = new HashMap();
 
@@ -29,12 +30,12 @@ public class PrintJobScheduler
    * 
    * @param printJob
    */
-  protected static void schedule(IPrintJob printJob)
+  protected static void schedule(PrintJob printJob)
   {
     String printerHost = printJob.getPrinter().getHost() + ":" + printJob.getPrinter().getPort();
     if (PRINTJOBS.containsKey(printerHost))
     {
-      ArrayList<IPrintJob> printQueue = PRINTJOBS.get(printerHost);
+      ArrayList<PrintJob> printQueue = PRINTJOBS.get(printerHost);
 
       if (printQueue.contains(printJob))
       {
@@ -57,7 +58,7 @@ public class PrintJobScheduler
     else
     {
       // Never printed before to this host, create new queue
-      ArrayList<IPrintJob> printQueue = new ArrayList();
+      ArrayList<PrintJob> printQueue = new ArrayList();
       printQueue.add(printJob);
       PRINTJOBS.put(printerHost, printQueue);
       start(printJob);
@@ -69,7 +70,7 @@ public class PrintJobScheduler
    * @param printer For which printer the queue is
    * @return Size of the queue, 0 if the queue doesn't exists
    */
-  protected static int getQueueSize(LPRPrinter printer){
+  protected static int getQueueSize(Printer printer){
     String printerHost = printer.getHost() + ":" + printer.getPort();
     if(PRINTJOBS.containsKey(printerHost)){
         return PRINTJOBS.get(printerHost).size();
@@ -79,11 +80,11 @@ public class PrintJobScheduler
   }
 
   /**
-   * Start new thread for PrintJob
+   * Start new thread for LPRPrintJob
    * 
    * @param printJob
    */
-  private static void start(IPrintJob printJob)
+  private static void start(PrintJob printJob)
   {
     final String printerHost = printJob.getPrinter().getHost() + ":" + printJob.getPrinter().getPort();
     // Check if thread for this host is already running
@@ -102,17 +103,17 @@ public class PrintJobScheduler
       @Override
       public void run()
       {
-        ArrayList<IPrintJob> printQueue = PRINTJOBS.get(printerHost);
+        ArrayList<PrintJob> printQueue = PRINTJOBS.get(printerHost);
         while (!printQueue.isEmpty())
         {
-          IPrintJob printJob = printQueue.get(0);
+          PrintJob printJob = printQueue.get(0);
           try
           {
             printJob.print();
           }
-          catch (LPRException ex)
+          catch (PrintException ex)
           {
-            PrintJob.LOG.log(Level.SEVERE, "PrintJob failed", ex);
+            LPRPrintJob.LOG.log(Level.SEVERE, "PrintJob failed", ex);
           }
           printQueue.remove(0);
         }

@@ -11,7 +11,7 @@ sourceCompatibility = '1.8'
 // prefer. In this case NetBeans will not add these tasks but you may rely on
 // your own implementation.
 if (!hasProperty('mainClass')) {
-    ext.mainClass = ''
+    ext.mainClass = 'PrintExample'
 }
 
 repositories {
@@ -22,6 +22,10 @@ repositories {
 }
 
 dependencies {
+	compile files('lib/velocity-1.7.jar')
+	compile files('lib/commons-collections-3.2.1.jar')
+	compile files('lib/commons-lang-2.4.jar')
+	compile files('lib/commons-logging-1.1.jar')
     // TODO: Add dependencies here ...
     // You can read more about how to add dependency here:
     //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:how_to_declare_your_dependencies

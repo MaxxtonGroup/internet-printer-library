@@ -1,4 +1,4 @@
-package com.maxxton.printer.lpr;
+package com.maxxton.printer;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class PrinterConnection implements Closeable
    * @param socket Socket connection
    * @throws IOException 
    */
-  protected PrinterConnection(Socket socket) throws IOException
+  public PrinterConnection(Socket socket) throws IOException
   {
     this.socket = socket;
     this.inputStream = socket.getInputStream();
@@ -36,7 +36,7 @@ public class PrinterConnection implements Closeable
    * @param in InputStream
    * @param out OutputStream
    */
-  protected PrinterConnection(InputStream in, OutputStream out){
+  public PrinterConnection(InputStream in, OutputStream out){
     socket = null;
     this.inputStream = in;
     this.outputStream = out;

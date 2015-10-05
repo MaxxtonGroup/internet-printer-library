@@ -1,4 +1,4 @@
-package com.maxxton.printer.lpr;
+package com.maxxton.printer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
 public class JobSchedulerTest
 {
   
-  private LPRPrinter printer1;
-  private LPRPrinter printer2;
+  private Printer printer1;
+  private Printer printer2;
 
   public JobSchedulerTest()
   {
@@ -40,18 +40,18 @@ public class JobSchedulerTest
   @Before
   public void setUp()
   {
-    printer1 = new LPRPrinter("192.168.0.1");
+    printer1 = new Printer("192.168.0.1");
     printer1.addPrintListener(new PrintAdapter() {
       @Override
-      public void printFailed(PrintEvent event, LPRException e)
+      public void printFailed(PrintEvent event, PrintException e)
       {
         e.printStackTrace();
       }
     });
-    printer2 = new LPRPrinter("192.168.0.2");
+    printer2 = new Printer("192.168.0.2");
     printer2.addPrintListener(new PrintAdapter() {
       @Override
-      public void printFailed(PrintEvent event, LPRException e)
+      public void printFailed(PrintEvent event, PrintException e)
       {
         e.printStackTrace();
       }
@@ -72,13 +72,18 @@ public class JobSchedulerTest
     final List<Boolean> report = new ArrayList();
 
     //Create test job
-    AbstractPrintJob testJob = new AbstractPrintJob(printer1)
+    PrintJob testJob = new PrintJob(printer1, null, PrintProtocol.RAW)
     {
       @Override
-      public void print() throws LPRException
+      public void print() throws PrintException
       {
         //Notify to the report that job has run
         report.add(true);
+      }
+
+      @Override
+      public void execute(PrinterConnection printerConnection) throws Exception
+      {
       }
     };
 
@@ -86,6 +91,7 @@ public class JobSchedulerTest
     PrintJobScheduler.schedule(testJob);
 
     //Wait for all jobs to finish
+    int timeout = 1000;
     while (PrintJobScheduler.getQueueSize(printer1) > 0)
     {
       try
@@ -93,6 +99,10 @@ public class JobSchedulerTest
         Thread.sleep(20);
       } catch (InterruptedException e)
       {
+      }
+      timeout -= 20;
+      if(timeout == 0){
+        fail("timeout");
       }
     }
 
@@ -110,10 +120,10 @@ public class JobSchedulerTest
     final List<Boolean> report = new ArrayList();
 
     //Create first job
-    AbstractPrintJob testJob1 = new AbstractPrintJob(printer1)
+    PrintJob testJob1 = new PrintJob(printer1, null, PrintProtocol.RAW)
     {
       @Override
-      public void print() throws LPRException
+      public void print() throws PrintException
       {
         //Check if other test has run
         if(!report.isEmpty()){
@@ -132,13 +142,18 @@ public class JobSchedulerTest
           report.add(false);
         }
       }
+
+      @Override
+      public void execute(PrinterConnection printerConnection) throws Exception
+      {
+      }
     };
 
     //Create second job
-    AbstractPrintJob testJob2 = new AbstractPrintJob(printer1)
+    PrintJob testJob2 = new PrintJob(printer1, null, PrintProtocol.RAW)
     {
       @Override
-      public void print() throws LPRException
+      public void print() throws PrintException
       {
         //Check if other test has run
         if(report.isEmpty()){
@@ -152,6 +167,11 @@ public class JobSchedulerTest
         
         report.add(true);
       }
+
+      @Override
+      public void execute(PrinterConnection printerConnection) throws Exception
+      {
+      }
     };
 
     //Schedule the job
@@ -159,6 +179,7 @@ public class JobSchedulerTest
     PrintJobScheduler.schedule(testJob2);
 
     //Wait for all jobs to finish
+    int timeout = 1000;
     while (PrintJobScheduler.getQueueSize(printer1) > 0)
     {
       try
@@ -166,6 +187,10 @@ public class JobSchedulerTest
         Thread.sleep(20);
       } catch (InterruptedException e)
       {
+      }
+      timeout -= 20;
+      if(timeout == 0){
+        fail("timeout");
       }
     }
 
@@ -185,10 +210,10 @@ public class JobSchedulerTest
     final List<Boolean> report = new ArrayList();
 
     //Create first job
-    AbstractPrintJob testJob1 = new AbstractPrintJob(printer1)
+    PrintJob testJob1 = new PrintJob(printer1, null, PrintProtocol.RAW)
     {
       @Override
-      public void print() throws LPRException
+      public void print() throws PrintException
       {
         //Notify that this job has started
         report.add(true);
@@ -213,13 +238,18 @@ public class JobSchedulerTest
         
         report.add(status);
       }
+
+      @Override
+      public void execute(PrinterConnection printerConnection) throws Exception
+      {
+      }
     };
 
     //Create second job for different printer
-    AbstractPrintJob testJob2 = new AbstractPrintJob(printer2)
+    PrintJob testJob2 = new PrintJob(printer2, null, PrintProtocol.RAW)
     {
       @Override
-      public void print() throws LPRException
+      public void print() throws PrintException
       {
         //Notify that this job has started
         report.add(true);
@@ -244,6 +274,11 @@ public class JobSchedulerTest
         
         report.add(status);
       }
+
+      @Override
+      public void execute(PrinterConnection printerConnection) throws Exception
+      {
+      }
     };
 
     //Schedule the job
@@ -251,6 +286,7 @@ public class JobSchedulerTest
     PrintJobScheduler.schedule(testJob2);
 
     //Wait for all jobs to finish
+    int timeout = 1000;
     while (PrintJobScheduler.getQueueSize(printer1) > 0 && PrintJobScheduler.getQueueSize(printer2) > 0)
     {
       try
@@ -259,11 +295,17 @@ public class JobSchedulerTest
       } catch (InterruptedException e)
       {
       }
+      timeout -= 20;
+      if(timeout == 0){
+        fail("timeout");
+      }
     }
 
     //Check if both jobs have run
     assertEquals(report.size(), 4);
+    System.out.println(report);
     //Check if both jobs ran in the correct order
+    System.out.println(report.get(0) + " " + report.get(1) + " " + report.get(2) + " " + report.get(3));
     assertTrue(report.get(0) && report.get(1) && report.get(2) && report.get(3));
   }
 }

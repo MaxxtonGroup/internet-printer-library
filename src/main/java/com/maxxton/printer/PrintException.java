@@ -1,5 +1,5 @@
 
-package com.maxxton.printer.lpr;
+package com.maxxton.printer;
 
 /**
  * This Exception is throwen during printing
@@ -9,20 +9,20 @@ package com.maxxton.printer.lpr;
  * 
  * @see PrintJob#print()
  */
-public class LPRException extends Exception
+public class PrintException extends Exception
 {
 
-  public LPRException(String msg)
+  public PrintException(String msg)
   {
     super(msg);
   }
 
-  public LPRException(Throwable e)
+  public PrintException(Throwable e)
   {
     super(e);
   }
 
-  public LPRException(String msg, Throwable e)
+  public PrintException(String msg, Throwable e)
   {
     super(msg, e);
   }

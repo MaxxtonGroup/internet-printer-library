@@ -1,5 +1,5 @@
 
-package com.maxxton.printer.lpr;
+package com.maxxton.printer;
 
 /**
  *
@@ -11,8 +11,10 @@ package com.maxxton.printer.lpr;
 public abstract class PrintAdapter implements PrinterListener
 {
 
+  @Override
   public void printSucceed(PrintEvent event){}
 
-  public void printFailed(PrintEvent event, LPRException e){}
+  @Override
+  public void printFailed(PrintEvent event, PrintException e){}
 
 }
