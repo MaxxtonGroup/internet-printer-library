@@ -1,4 +1,3 @@
-
 package com.maxxton.printer.lpr;
 
 import com.maxxton.printer.PrintDocument;
@@ -9,20 +8,22 @@ import com.maxxton.printer.PrinterConnection;
 import com.maxxton.printer.Printer;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 
 /**
  * Executes LPRPrintJob <br>
  * 1. Open connection with the Printer <br>
- * 2. Send control file <br>
- * 3. Send data file <br>
- * 4. Close connection
- * 
- * @author Hermans.S
- * Copyright Maxxton 2015
+ * 2. Send request for new printjob <br>
+ * 3. Send control file <br>
+ * 4. Send data file <br>
+ * 5. Close connection
+ *
+ * @author Hermans.S Copyright Maxxton 2015
  */
-public class LPRPrintJob extends PrintJob{
+public class LPRPrintJob extends PrintJob
+{
 
   private final String jobId;
   private String user = System.getProperty("user.name");
@@ -30,11 +31,9 @@ public class LPRPrintJob extends PrintJob{
 
   /**
    * Create new PrintJob
-   * 
-   * @param printer
-   *          LPR Printer
-   * @param document
-   *          Document to be printed
+   *
+   * @param printer LPR Printer
+   * @param document Document to be printed
    */
   public LPRPrintJob(Printer printer, PrintDocument document)
   {
@@ -43,93 +42,132 @@ public class LPRPrintJob extends PrintJob{
     try
     {
       hostname = InetAddress.getLocalHost().getHostName();
-    }
-    catch (Exception e)
+    } catch (Exception e)
     {
     }
   }
 
   /**
    * Print the document
-   * 
+   *
    * @param printerConnection Connection with the printer
-   * @throws PrintException
+   * @throws Exception
    */
   @Override
   public void execute(PrinterConnection printerConnection) throws Exception
   {
-      BufferedReader printerIn = new BufferedReader(new InputStreamReader(printerConnection.getInputStream()));
-      DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
+    // Create control file
+    String controlFile = createControlFile();
+    // Create document
+    byte[] rawDocument = getDocument().getRaw();
 
-      // Create control file
-      String controlFile = createControlFile();
+    //Send lpr printjob
+    sendHeader(printerConnection);
+    sendControlFile(printerConnection, controlFile);
+    sendDataFile(printerConnection, rawDocument, true);
+  }
 
-      // Create document
-      byte[] rawDocument = getDocument().getRaw();
+  /**
+   * Send request for start new printjob
+   *
+   * @param printerConnection Connection with the printer
+   * @throws IOException
+   * @throws PrintException
+   */
+  protected void sendHeader(PrinterConnection printerConnection) throws IOException, PrintException
+  {
+    BufferedReader printerIn = new BufferedReader(new InputStreamReader(printerConnection.getInputStream()));
+    DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
 
-      // start sending
-      printerOut.write(02);
-      printerOut.writeBytes("1");
-      printerOut.write(LPRCommand.LF.getCodes());
-      printerOut.flush();
+    printerOut.write(02);
+    printerOut.writeBytes("1");
+    printerOut.write(LPRCommand.LF.getCodes());
+    printerOut.flush();
 
-      if (printerIn.read() != 0)
-      {
-        throw new PrintException("Error while start printing on the queue");
-      }
+    if (printerIn.read() != 0)
+    {
+      throw new PrintException("Error while start printing on the queue");
+    }
+  }
 
-      // Write control file
-      printerOut.write(02);
-      printerOut.writeBytes(String.valueOf(controlFile.length()));
-      printerOut.write(LPRCommand.SPACE.getCodes());
-      printerOut.writeBytes("cfA" + jobId + hostname);
-      printerOut.write(LPRCommand.LF.getCodes());
-      printerOut.flush();
+  /**
+   * Send control file. Contains attributes for the printjob
+   *
+   * @param printerConnection Connection with the printer
+   * @param controlFile The control file to be send
+   * @throws IOException
+   * @throws PrintException
+   */
+  protected void sendControlFile(PrinterConnection printerConnection, String controlFile) throws IOException, PrintException
+  {
+    BufferedReader printerIn = new BufferedReader(new InputStreamReader(printerConnection.getInputStream()));
+    DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
 
-      if (printerIn.read() != 0)
-      {
-        throw new PrintException("Error while start sending control file");
-      }
+    printerOut.write(02);
+    printerOut.writeBytes(String.valueOf(controlFile.length()));
+    printerOut.write(LPRCommand.SPACE.getCodes());
+    printerOut.writeBytes("cfA" + jobId + hostname);
+    printerOut.write(LPRCommand.LF.getCodes());
+    printerOut.flush();
 
-      System.out.println(controlFile);
-      printerOut.writeBytes(controlFile);
-      printerOut.write(LPRCommand.NULL.getCodes());
-      printerOut.flush();
+    if (printerIn.read() != 0)
+    {
+      throw new PrintException("Error while start sending control file");
+    }
 
-      if (printerIn.read() != 0)
-      {
-        throw new PrintException("Error while sending control file");
-      }
+    System.out.println(controlFile);
+    printerOut.writeBytes(controlFile);
+    printerOut.write(LPRCommand.NULL.getCodes());
+    printerOut.flush();
 
-      // Write data file
-      printerOut.write(03);
+    if (printerIn.read() != 0)
+    {
+      throw new PrintException("Error while sending control file");
+    }
+  }
 
-      printerOut.writeBytes(String.valueOf(rawDocument.length));
-      printerOut.write(LPRCommand.SPACE.getCodes());
-      printerOut.writeBytes("dfA" + jobId + hostname);
-      printerOut.write(LPRCommand.LF.getCodes());
-      printerOut.flush();
+  /**
+   * Send data file. The printjob it self
+   *
+   * @param printerConnection Connection with the printer
+   * @param dataFile Data file to be send
+   * @param secondCheck Check after datafile is send
+   * @throws IOException
+   * @throws PrintException
+   */
+  protected void sendDataFile(PrinterConnection printerConnection, byte[] dataFile, boolean secondCheck) throws IOException, PrintException
+  {
+    BufferedReader printerIn = new BufferedReader(new InputStreamReader(printerConnection.getInputStream()));
+    DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
 
-      if (printerIn.read() != 0)
-      {
-        throw new PrintException("Error while start sending data file");
-      }
+    printerOut.write(03);
+    printerOut.writeBytes(String.valueOf(dataFile.length));
+    printerOut.write(LPRCommand.SPACE.getCodes());
+    printerOut.writeBytes("dfA" + jobId + hostname);
+    printerOut.write(LPRCommand.LF.getCodes());
+    printerOut.flush();
 
-      printerOut.write(rawDocument);
-      printerOut.writeByte(0);
-      printerOut.flush();
+    if (printerIn.read() != 0)
+    {
+      throw new PrintException("Error while start sending data file");
+    }
 
+    printerOut.write(dataFile);
+    printerOut.writeByte(0);
+    printerOut.flush();
+
+    if (secondCheck)
+    {
       if (printerIn.read() != 0)
       {
         throw new PrintException("Error while sending data file");
       }
-
-      printerOut.flush();
+    }
   }
 
   /**
    * Create control file
-   * 
+   *
    * @return control file
    */
   private String createControlFile()
@@ -156,21 +194,25 @@ public class LPRPrintJob extends PrintJob{
 
     return controlFile;
   }
-  
-  public int getJobId(){
+
+  public int getJobId()
+  {
     return Integer.parseInt(jobId);
   }
-  
-  public String getUser(){
+
+  public String getUser()
+  {
     return user;
   }
-  
-  public String getHostname(){
+
+  public String getHostname()
+  {
     return hostname;
   }
 
   /**
    * Get new random job id
+   *
    * @return number between 000-999
    */
   private String getNewJobId()

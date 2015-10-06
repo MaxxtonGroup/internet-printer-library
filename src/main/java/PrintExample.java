@@ -47,15 +47,30 @@ public class PrintExample
   public static void main(String[] args) throws IOException
   {
 
-    String host = "192.168.252.17";
+    String host = "192.168.252.145";
 
     // Create printer
     Printer printer = new Printer(host);
 
     // Create document
-    PrintDocument document = new PrintDocument("test bon");
-    PrintFormat format = new PrintFormat(PrintExample.class.getResourceAsStream("/bonexample"), "world");
-    document.insert(format);
+//    PrintDocument document = new PrintDocument("test bon");
+//    PrintFormat format = new PrintFormat(PrintExample.class.getResourceAsStream("/bonexample"), "world");
+//    document.insert(format);
+    
+    FGLDocument document = new FGLDocument("test bon");
+    document.insert(FGLCommand.ROTATE_TEXT_270_DEGREES);
+    document.insertFont(3);
+    document.insertRowAndColumn(621,40);
+    document.insertFontHeightWidht(1, 1);
+    
+    document.insert("Hello world");
+    document.insert(FGLCommand.DOCUMENT_END);
+    
+//    LPRDocument document = new LPRDocument("test bon");
+//    document.insert("Hello world");
+//    document.insertPaperCut();
+//    
+    printer.print(document, PrintProtocol.SIMPLE_LPR);
     
     
     System.out.println(new String(document.getRaw()));

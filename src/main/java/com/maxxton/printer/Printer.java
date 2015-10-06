@@ -1,6 +1,7 @@
 package com.maxxton.printer;
 
 import com.maxxton.printer.lpr.LPRPrintJob;
+import com.maxxton.printer.lpr.SimpleLPRPrintJob;
 import com.maxxton.printer.raw.RawPrintJob;
 import java.util.ArrayList;
 
@@ -50,12 +51,15 @@ public class Printer
   public PrintJob print(PrintDocument document, PrintProtocol protocol)
   {
     PrintJob printJob;
-    if (protocol.equals(PrintProtocol.LPR))
-    {
-      printJob = new LPRPrintJob(this, document);
-    } else if (protocol.equals(PrintProtocol.RAW))
+    if (protocol.equals(PrintProtocol.RAW))
     {
       printJob = new RawPrintJob(this, document);
+    } else if (protocol.equals(PrintProtocol.LPR))
+    {
+      printJob = new LPRPrintJob(this, document);
+    } else if (protocol.equals(PrintProtocol.SIMPLE_LPR))
+    {
+      printJob = new SimpleLPRPrintJob(this, document);
     } else
     {
       throw new IllegalArgumentException("Unknown protocol");
