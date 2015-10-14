@@ -1,11 +1,9 @@
-
 package com.maxxton.printer;
 
 /**
  * Event for when the printer is done printing.
- * 
- * @author Hermans.S
- * Copyright Maxxton 2015
+ *
+ * @author Hermans.S Copyright Maxxton 2015
  */
 public class PrintEvent
 {

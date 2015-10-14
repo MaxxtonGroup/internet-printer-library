@@ -14,12 +14,11 @@ import static org.junit.Assert.*;
  *
  * @see PrintJobScheduler
  *
- * @author Hermans.S
- * Copyright Maxxton 2015
+ * @author Hermans.S Copyright Maxxton 2015
  */
 public class JobSchedulerTest
 {
-  
+
   private Printer printer1;
   private Printer printer2;
 
@@ -41,7 +40,8 @@ public class JobSchedulerTest
   public void setUp()
   {
     printer1 = new Printer("192.168.0.1");
-    printer1.addPrintListener(new PrintAdapter() {
+    printer1.addPrintListener(new PrintAdapter()
+    {
       @Override
       public void printFailed(PrintEvent event, PrintException e)
       {
@@ -49,7 +49,8 @@ public class JobSchedulerTest
       }
     });
     printer2 = new Printer("192.168.0.2");
-    printer2.addPrintListener(new PrintAdapter() {
+    printer2.addPrintListener(new PrintAdapter()
+    {
       @Override
       public void printFailed(PrintEvent event, PrintException e)
       {
@@ -101,7 +102,8 @@ public class JobSchedulerTest
       {
       }
       timeout -= 20;
-      if(timeout == 0){
+      if (timeout == 0)
+      {
         fail("timeout");
       }
     }
@@ -111,8 +113,7 @@ public class JobSchedulerTest
   }
 
   /**
-   * Execute two jobs for the same printer
-   * They should be scheduled after each other
+   * Execute two jobs for the same printer They should be scheduled after each other
    */
   @Test
   public void executeTwoJobs()
@@ -126,18 +127,24 @@ public class JobSchedulerTest
       public void print() throws PrintException
       {
         //Check if other test has run
-        if(!report.isEmpty()){
+        if (!report.isEmpty())
+        {
           report.add(false);
           System.err.println("job1 isn't first");
           return;
         }
-        try{
+        try
+        {
           Thread.sleep(50);
-        }catch(InterruptedException e){}
-        
-        if(report.isEmpty()){
+        } catch (InterruptedException e)
+        {
+        }
+
+        if (report.isEmpty())
+        {
           report.add(true);
-        }else{
+        } else
+        {
           System.err.println("job1 hasn't finished first");
           report.add(false);
         }
@@ -156,15 +163,19 @@ public class JobSchedulerTest
       public void print() throws PrintException
       {
         //Check if other test has run
-        if(report.isEmpty()){
+        if (report.isEmpty())
+        {
           report.add(false);
           System.err.println("job2 has started first");
           return;
         }
-        try{
+        try
+        {
           Thread.sleep(50);
-        }catch(InterruptedException e){}
-        
+        } catch (InterruptedException e)
+        {
+        }
+
         report.add(true);
       }
 
@@ -189,7 +200,8 @@ public class JobSchedulerTest
       {
       }
       timeout -= 20;
-      if(timeout == 0){
+      if (timeout == 0)
+      {
         fail("timeout");
       }
     }
@@ -201,8 +213,8 @@ public class JobSchedulerTest
   }
 
   /**
-   * Execute two jobs for the two different printers
-   * They should be scheduled after each other
+   * Execute two jobs for the two different printers They should be scheduled after each
+   * other
    */
   @Test
   public void executeTwoJobsForTwoPrinters()
@@ -217,25 +229,34 @@ public class JobSchedulerTest
       {
         //Notify that this job has started
         report.add(true);
-        
-        try{
+
+        try
+        {
           Thread.sleep(50);
-        }catch(InterruptedException e){}
-        
+        } catch (InterruptedException e)
+        {
+        }
+
         //Check if other job is running but not finished
         boolean status = false;
-        if(report.size() < 2){
+        if (report.size() < 2)
+        {
           System.err.println("Job 2 isn't started");
-        }else if(report.size() > 2){
+        } else if (report.size() > 2)
+        {
           System.err.println("Job 2 is already finished");
-        }else{
+        } else
+        {
           status = true;
         }
-        
-        try{
+
+        try
+        {
           Thread.sleep(50);
-        }catch(InterruptedException e){}
-        
+        } catch (InterruptedException e)
+        {
+        }
+
         report.add(status);
       }
 
@@ -253,25 +274,34 @@ public class JobSchedulerTest
       {
         //Notify that this job has started
         report.add(true);
-        
-        try{
+
+        try
+        {
           Thread.sleep(50);
-        }catch(InterruptedException e){}
-        
+        } catch (InterruptedException e)
+        {
+        }
+
         //Check if other job is running but not finished
         boolean status = false;
-        if(report.size() < 2){
+        if (report.size() < 2)
+        {
           System.err.println("Job 1 isn't started");
-        }else if(report.size() > 2){
+        } else if (report.size() > 2)
+        {
           System.err.println("Job 1 is already finished");
-        }else{
+        } else
+        {
           status = true;
         }
-        
-        try{
+
+        try
+        {
           Thread.sleep(50);
-        }catch(InterruptedException e){}
-        
+        } catch (InterruptedException e)
+        {
+        }
+
         report.add(status);
       }
 
@@ -296,7 +326,8 @@ public class JobSchedulerTest
       {
       }
       timeout -= 20;
-      if(timeout == 0){
+      if (timeout == 0)
+      {
         fail("timeout");
       }
     }

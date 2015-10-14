@@ -9,6 +9,8 @@ import java.io.InputStream;
 
 /**
  *
+ * Copyright Maxxton 2015
+ *
  * @author Hermans.S
  */
 public class PrintDocument
@@ -51,8 +53,8 @@ public class PrintDocument
    * Insert Raw bytes
    *
    * @param raw bytes
-   * @param i start point
-   * @param l length
+   * @param i   start point
+   * @param l   length
    */
   public void insert(byte[] raw, int i, int l)
   {
@@ -122,13 +124,25 @@ public class PrintDocument
   {
     insert('\n');
   }
-  
+
   /**
    * Insert print format
+   *
    * @param format PrintFormat
    */
-  public void insert(PrintFormat format){
+  public void insert(PrintFormat format)
+  {
     insert(format.toString());
+  }
+
+  /**
+   * Insert sub document
+   *
+   * @param document sub PrintDocument
+   */
+  public void insert(PrintDocument document)
+  {
+    insert(document.getRaw());
   }
 
   /**

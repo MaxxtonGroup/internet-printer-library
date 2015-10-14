@@ -1,20 +1,20 @@
-
 package com.maxxton.printer.fgl;
 
 /**
+ * FGL commands
+ * http://portal.siriusware.com/docs/index.html#page/Version%25204.3%2520Salesware%2520Documentation%2FMASTER_43_Layouts.17.40.html
+ * Copyright Maxxton 2015
  *
- * @author hermans.s
+ * @author Hermans.S
  */
 public enum FGLCommand
 {
-  
-  ROTATE_TEXT_0_DEGREES("NR"),
-  ROTATE_TEXT_90_DEGREES("PR"),
-  ROTATE_TEXT_180_DEGREES("PU"),
-  ROTATE_TEXT_270_DEGREES("RL"),
-  
+
+  TEXT_ORIENTATION_PORTRET("NR"),
+  TEXT_ORIENTATION_LANDSCAPE_INVERTED("PR"),
+  TEXT_ORIENTATION_PORTRET_INVERTED("PU"),
+  TEXT_ORIENTATION_LANDSCAPE("RL"),
   ROW_COLUMN("RC"),
-  
   FONT_1("F1"),
   FONT_2("F2"),
   FONT_3("F3"),
@@ -29,16 +29,14 @@ public enum FGLCommand
   FONT_12("F12"),
   FONT_13("F13"),
   FONT_HEIGHT_WIDTH("HW"),
-  
   NEW_LINE("NR"),
   DOCUMENT_END("p"),
-  BOX_SIZE("BS"),
-  
-  ;
-  
-  private String command;
-  
-  private FGLCommand(String command){
+  BOX_SIZE("BS"),;
+
+  private final String command;
+
+  private FGLCommand(String command)
+  {
     this.command = command;
   }
 
@@ -46,5 +44,5 @@ public enum FGLCommand
   {
     return command;
   }
-  
+
 }

@@ -8,9 +8,8 @@ import java.net.Socket;
 
 /**
  * Connection with the printer
- * 
- * @author Hermans.S
- * Copyright Maxxton 2015
+ *
+ * @author Hermans.S Copyright Maxxton 2015
  */
 public class PrinterConnection implements Closeable
 {
@@ -21,8 +20,9 @@ public class PrinterConnection implements Closeable
 
   /**
    * Create PrinterConnection based on socket connection
+   *
    * @param socket Socket connection
-   * @throws IOException 
+   * @throws IOException
    */
   public PrinterConnection(Socket socket) throws IOException
   {
@@ -30,13 +30,15 @@ public class PrinterConnection implements Closeable
     this.inputStream = socket.getInputStream();
     this.outputStream = socket.getOutputStream();
   }
-  
+
   /**
    * Create PrinterConnection based on InputStream and OutputStream
+   *
    * @param in InputStream
    * @param out OutputStream
    */
-  public PrinterConnection(InputStream in, OutputStream out){
+  public PrinterConnection(InputStream in, OutputStream out)
+  {
     socket = null;
     this.inputStream = in;
     this.outputStream = out;
@@ -60,13 +62,16 @@ public class PrinterConnection implements Closeable
   @Override
   public void close() throws IOException
   {
-    if(inputStream != null){
+    if (inputStream != null)
+    {
       inputStream.close();
     }
-    if(outputStream != null){
+    if (outputStream != null)
+    {
       outputStream.close();
     }
-    if(socket != null){
+    if (socket != null)
+    {
       socket.close();
     }
   }

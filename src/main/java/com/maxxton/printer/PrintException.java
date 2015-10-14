@@ -1,12 +1,10 @@
-
 package com.maxxton.printer;
 
 /**
  * This Exception is throwen during printing
- * 
- * @author Hermans.S
- * Copyright Maxxton 2015
- * 
+ *
+ * @author Hermans.S Copyright Maxxton 2015
+ *
  * @see PrintJob#print()
  */
 public class PrintException extends Exception

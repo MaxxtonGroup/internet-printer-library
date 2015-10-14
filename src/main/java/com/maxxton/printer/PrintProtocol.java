@@ -8,11 +8,17 @@ package com.maxxton.printer;
 public enum PrintProtocol
 {
 
-  /** Raw printing */
+  /**
+   * Raw printing
+   */
   RAW(9100),
-  /** Line Print Remote **/
+  /**
+   * Line Print Remote *
+   */
   LPR(515),
-  /** Simple version of LPR for Bota printers */
+  /**
+   * Simple version of LPR for Bota printers
+   */
   SIMPLE_LPR(515);
 
   private final int port;

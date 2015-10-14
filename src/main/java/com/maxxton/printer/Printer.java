@@ -1,8 +1,11 @@
 package com.maxxton.printer;
 
+import static com.maxxton.printer.PrintJob.LOG;
 import com.maxxton.printer.lpr.LPRPrintJob;
 import com.maxxton.printer.lpr.SimpleLPRPrintJob;
 import com.maxxton.printer.raw.RawPrintJob;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -102,6 +105,97 @@ public class Printer
   public PrinterListener[] getPrintListeners()
   {
     return listeners.toArray(new PrinterListener[listeners.size()]);
+  }
+
+  /**
+   * Connect to printer
+   *
+   * @return printer connection
+   * @throws PrintException connection error
+   */
+  public PrinterConnection connect() throws PrintException
+  {
+    return connect(port);
+  }
+
+  /**
+   * Connect to printer
+   *
+   * @param protocol the protocol for this connection
+   * @return printer connection
+   * @throws PrintException connection error
+   */
+  public PrinterConnection connect(PrintProtocol protocol) throws PrintException
+  {
+    return connect(protocol.getPort());
+  }
+
+  /**
+   * Connect to printer
+   *
+   * @param port to connect to the printer
+   * @return printer connection
+   * @throws PrintException connection error
+   */
+  public PrinterConnection connect(int port) throws PrintException
+  {
+    try
+    {
+      LOG.info("Connecting... to " + getHost() + ":" + port);
+      Socket socket = new Socket(getHost(), port);
+      socket.setSoTimeout(getTimeout());
+      LOG.info("Connected");
+      return new PrinterConnection(socket);
+    } catch (IOException e)
+    {
+      throw new PrintException("Printer offline", e);
+    }
+  }
+
+  /**
+   * Check if it possible to connect to the printer
+   *
+   * @return true if the printer is available, otherwise false
+   */
+  public boolean available()
+  {
+    return available(port);
+  }
+
+  /**
+   * Check if it possible to connect to the printer
+   *
+   * @param protocol protocol for the ocnnection with the printer
+   * @return true if the printer is available, otherwise false
+   */
+  public boolean available(PrintProtocol protocol)
+  {
+    return available(protocol.getPort());
+  }
+
+  /**
+   * Check if it possible to connect to the printer
+   *
+   * @param port number for the connection with the printer
+   * @return true if the printer is available, otherwise false
+   */
+  public boolean available(int port)
+  {
+    try
+    {
+      PrinterConnection connection = connect(port);
+      try
+      {
+        connection.close();
+      } catch (IOException e)
+      {
+      }
+      return true;
+    } catch (PrintException e)
+    {
+      LOG.warning(e.getMessage());
+      return false;
+    }
   }
 
 }

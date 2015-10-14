@@ -17,8 +17,7 @@ import static org.junit.Assert.*;
  *
  * @see LPRDocument
  *
- * @author Hermans.S
- * Copyright Maxxton 2015
+ * @author Hermans.S Copyright Maxxton 2015
  */
 public class PrintDocumentTest
 {
@@ -55,10 +54,10 @@ public class PrintDocumentTest
   {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");
-    
+
     //Insert bytes in the document
     doc.insert((byte) 0, (byte) 50, (byte) 150);
-    
+
     //Check if the raw output of the document is the same
     byte[] raw = doc.getRaw();
     assertEquals(raw.length, 3);
@@ -75,11 +74,14 @@ public class PrintDocumentTest
   {
     //Create new document
     PrintDocument doc = new PrintDocument("test doc");
-    
+
     //Insert bytes in the document
-    byte[] data = new byte[]{(byte) 0, (byte) 50, (byte) 150};
+    byte[] data = new byte[]
+    {
+      (byte) 0, (byte) 50, (byte) 150
+    };
     doc.insert(data, 1, 1);
-    
+
     //Check if the raw output of the document is the same
     byte[] raw = doc.getRaw();
     assertEquals(raw.length, 1);
@@ -88,6 +90,7 @@ public class PrintDocumentTest
 
   /**
    * Test if bytes are inserted correctly
+   *
    * @throws java.io.IOException
    */
   @Test
@@ -95,33 +98,33 @@ public class PrintDocumentTest
   {
     //Create new document
     PrintDocument doc = new PrintDocument("test doc");
-    
+
     //Insert string in the document for an InputStream
     String input = "Hello world";
     ByteArrayInputStream byteIn = new ByteArrayInputStream(input.getBytes("UTF-8"));
     doc.insert(byteIn);
-    
+
     //Check if the raw output of the document is the same
     byte[] raw = doc.getRaw();
     String output = new String(raw, "UTF-8");
     assertEquals(input, output);
   }
-  
+
   /**
    * Test if linefeed is inserted correctly
    */
   @Test
-  public void insertLineFeed(){
+  public void insertLineFeed()
+  {
     //Create new document
     PrintDocument doc = new PrintDocument("test doc");
-    
+
     //Insert line feed
     doc.insertLineFeed();
-    
+
     byte[] raw = doc.getRaw();
     assertEquals(raw.length, 1);
     assertEquals(raw[0], LPRCommand.LF.getCodes()[0]);
   }
-  
-  
+
 }

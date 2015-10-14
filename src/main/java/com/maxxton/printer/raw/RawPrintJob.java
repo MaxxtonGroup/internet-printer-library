@@ -12,15 +12,17 @@ import java.io.DataOutputStream;
  *
  * @author hermans.s
  */
-public class RawPrintJob extends PrintJob {
+public class RawPrintJob extends PrintJob
+{
 
-  public RawPrintJob(Printer printer, PrintDocument document) {
+  public RawPrintJob(Printer printer, PrintDocument document)
+  {
     super(printer, document, PrintProtocol.RAW);
   }
 
   /**
    * Print the document
-   * 
+   *
    * @param printerConnection Connection with the printer
    * @throws PrintException
    */

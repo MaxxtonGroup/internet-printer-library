@@ -1,4 +1,3 @@
-
 package com.maxxton.printer;
 
 import com.maxxton.printer.lpr.LPRPrintJob;
@@ -8,12 +7,10 @@ import java.util.Map;
 import java.util.logging.Level;
 
 /**
- * Schedule PrintJobs for each printer.
- * Each printer has it own queue.
- * This scheduler prevent printers to receive more than one job at the time.
- * 
- * @author Hermans.S
- * Copyright Maxxton 2015
+ * Schedule PrintJobs for each printer. Each printer has it own queue. This scheduler
+ * prevent printers to receive more than one job at the time.
+ *
+ * @author Hermans.S Copyright Maxxton 2015
  */
 public class PrintJobScheduler
 {
@@ -27,7 +24,7 @@ public class PrintJobScheduler
 
   /**
    * Schedule this printJob
-   * 
+   *
    * @param printJob
    */
   protected static void schedule(PrintJob printJob)
@@ -48,14 +45,12 @@ public class PrintJobScheduler
         // No other jobs queued, can run directly
         printQueue.add(printJob);
         start(printJob);
-      }
-      else
+      } else
       {
         // Wait for other jobs
         printQueue.add(printJob);
       }
-    }
-    else
+    } else
     {
       // Never printed before to this host, create new queue
       ArrayList<PrintJob> printQueue = new ArrayList();
@@ -64,24 +59,28 @@ public class PrintJobScheduler
       start(printJob);
     }
   }
-  
+
   /**
    * Get the queue length for a specific printer
+   *
    * @param printer For which printer the queue is
    * @return Size of the queue, 0 if the queue doesn't exists
    */
-  protected static int getQueueSize(Printer printer){
+  protected static int getQueueSize(Printer printer)
+  {
     String printerHost = printer.getHost() + ":" + printer.getPort();
-    if(PRINTJOBS.containsKey(printerHost)){
-        return PRINTJOBS.get(printerHost).size();
-    }else{
-        return 0;
+    if (PRINTJOBS.containsKey(printerHost))
+    {
+      return PRINTJOBS.get(printerHost).size();
+    } else
+    {
+      return 0;
     }
   }
 
   /**
    * Start new thread for LPRPrintJob
-   * 
+   *
    * @param printJob
    */
   private static void start(PrintJob printJob)
@@ -110,8 +109,7 @@ public class PrintJobScheduler
           try
           {
             printJob.print();
-          }
-          catch (PrintException ex)
+          } catch (PrintException ex)
           {
             LPRPrintJob.LOG.log(Level.SEVERE, "PrintJob failed", ex);
           }
