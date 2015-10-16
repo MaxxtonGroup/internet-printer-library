@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
- * PrintDocument is the document to be printed. This document is build up with FGLCommands
+ * PrintDocument is the document to be printed. This document is build up with
+ * FGLCommands
  * and text. These commands and text are send to the printer in a PrintJob.
+ * <p>
+ * <b>NOTE: Only LANDSCAPE orientation is supported yet!</b> 
  *
  * Copyright Maxxton 2015
  *
@@ -14,11 +17,14 @@ import java.util.StringTokenizer;
  */
 public class FGLDocument extends PrintDocument
 {
+  
+  public static final int MAX_ROW_LENGTH = 31;
+  public static final int MAX_ROW_COUNT = 9;
 
   public static final int DEFAULT_FONT = 3;
   public static final int DEFAULT_FONT_HEIGHT = 1;
   public static final int DEFAULT_FONT_WIDTH = 1;
-  public static final FGLCommand DEFAULT_ORIENTATION = FGLCommand.TEXT_ORIENTATION_PORTRET;
+  public static final FGLCommand DEFAULT_ORIENTATION = FGLCommand.TEXT_ORIENTATION_LANDSCAPE;
 
   public static final int PRINTER_DPI = 200;
   public static final double PAPER_WIDTH = 8.2;
@@ -47,6 +53,7 @@ public class FGLDocument extends PrintDocument
   private final int maxColumns;
   private final int maxRows;
   private final int rowLength;
+  private int currentRow = 0;
 
   public FGLDocument(String documentName)
   {
@@ -66,39 +73,56 @@ public class FGLDocument extends PrintDocument
     rowLength = maxColumns / FONT_WIDTHS[font - 1];
   }
 
-  public static void main(String[] args)
+  @Override
+  public void insert(String text)
   {
-    FGLDocument doc = new FGLDocument("hello");
-    System.out.println(doc.maxColumns);
-    System.out.println(doc.maxRows);
-    System.out.println(doc.rowLength);
+    String[] lines = text.split("\n|\\\\n");
+    ArrayList<String> newLines = new ArrayList();
+    for (String line : lines)
+    {
+      newLines.addAll(splitLargeLines(line, MAX_ROW_LENGTH));
+    }
+
+    for (String newLine : newLines)
+    {
+      insert(orientation);
+      insertFont(font);
+      currentRow += SPACE_BETWEEN_ROW;
+      if(currentRow / SPACE_BETWEEN_ROW > MAX_ROW_COUNT){
+        throw new FGLFormatException("Max row count exceeded: " + (currentRow / SPACE_BETWEEN_ROW) + " (max: " + MAX_ROW_COUNT + ")");
+      }
+      insertRowAndColumn(621, currentRow);
+      insertFontHeightWidht(fontHeight, fontWidth);
+      super.insert(newLine);
+      insertNewLine();
+    }
   }
 
   public void insert(FGLCommand command, String... args)
   {
-    insert("<" + command.getCode());
+    super.insert("<" + command.getCode());
     for (int i = 0; i < args.length; i++)
     {
       if (i > 0)
       {
-        insert(",");
+        super.insert(",");
       }
-      insert(args[i]);
+      super.insert(args[i]);
     }
-    insert(">");
+    super.insert(">");
   }
 
-  private void insertRowAndColumn(int row, int column)
+  public void insertRowAndColumn(int row, int column)
   {
     insert(FGLCommand.ROW_COLUMN, String.valueOf(row), String.valueOf(column));
   }
 
-  private void insertFontHeightWidht(int height, int width)
+  public void insertFontHeightWidht(int height, int width)
   {
     insert(FGLCommand.FONT_HEIGHT_WIDTH, String.valueOf(height), String.valueOf(width));
   }
 
-  private void insertFont(int font)
+  public void insertFont(int font)
   {
     FGLCommand fontCommand;
     switch (font)
@@ -149,47 +173,68 @@ public class FGLDocument extends PrintDocument
   }
 
   @Override
-  public void insertLineFeed()
+  public void insertNewLine()
   {
     insert(FGLCommand.NEW_LINE);
+    super.insertNewLine();
   }
 
-  public void end()
+  /**
+   * Insert end of the document
+   */
+  @Override
+  public void insertDocumentEnd()
   {
     insert(FGLCommand.DOCUMENT_END);
   }
 
-  private ArrayList<String> splitLargeLines(String line)
+  private ArrayList<String> splitLargeLines(String line, int maxLength)
   {
     StringTokenizer tokenizer = new StringTokenizer(line);
+    String curLine = null;
     ArrayList<String> lines = new ArrayList();
-    ArrayList<String> out = new ArrayList();
     while (tokenizer.hasMoreTokens())
     {
-      
-    }
-    return out;
-  }
-
-  public byte[] getRaw()
-  {
-    int maxLength = (orientation.equals(FGLCommand.TEXT_ORIENTATION_PORTRET)
-            || orientation.equals(FGLCommand.TEXT_ORIENTATION_PORTRET_INVERTED)
-                    ? maxColumns : maxRows);
-    String content = new String(super.getRaw());
-    String[] tickets = content.split("<p>");
-    for (String ticket : tickets)
-    {
-      ArrayList<String> rows = new ArrayList();
-      String[] lines = ticket.split("\n");
-      for (String line : lines)
+      String word = tokenizer.nextToken();
+      if (word.length() > maxLength)
       {
-
+        throw new FGLFormatException("Max word length exceeded: " + word.length() + " (max: " + maxLength + ")");
       }
-
+      if (curLine == null)
+      {
+        curLine = word;
+      } else
+      {
+        if (curLine.length() + 1 + word.length() > maxLength)
+        {
+          lines.add(curLine);
+          curLine = word;
+        } else
+        {
+          curLine += " " + word;
+        }
+      }
     }
-    return super.getRaw();
-
+    if(curLine != null){
+      lines.add(curLine);
+    }
+    return lines;
+  }
+  
+  public static void main(String[] args){
+    FGLDocument doc = new FGLDocument("");
+    doc.insert("1234567890123456789012345678901");
+    doc.insert("1234567890123456789012345678901");
+    doc.insert("1234567890123456789012345678901");
+    doc.insert("1234567890123456789012345678901");
+    doc.insert("1234567890123456789012345678901");
+    doc.insert("1234567890123456789012345678901");
+    doc.insert("1234567890123456789012345678901");
+    doc.insert("1234567890123456789012345678901");
+    doc.insert("1234567890123456789012345678901");
+    doc.insert("12345678901234 567890123456789012");
+    String respond = new String(doc.getRaw());
+    System.out.println(respond);
   }
 
 }

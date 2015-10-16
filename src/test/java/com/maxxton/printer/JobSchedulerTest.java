@@ -12,9 +12,10 @@ import static org.junit.Assert.*;
 /**
  * JUnit tests for PrintJobScheduler
  *
- * @see PrintJobScheduler
+ * Copyright Maxxton 2015
  *
- * @author Hermans.S Copyright Maxxton 2015
+ * @see PrintJobScheduler
+ * @author Hermans.S
  */
 public class JobSchedulerTest
 {
@@ -113,7 +114,8 @@ public class JobSchedulerTest
   }
 
   /**
-   * Execute two jobs for the same printer They should be scheduled after each other
+   * Execute two jobs for the same printer They should be scheduled after each
+   * other
    */
   @Test
   public void executeTwoJobs()
@@ -213,7 +215,8 @@ public class JobSchedulerTest
   }
 
   /**
-   * Execute two jobs for the two different printers They should be scheduled after each
+   * Execute two jobs for the two different printers They should be scheduled
+   * after each
    * other
    */
   @Test

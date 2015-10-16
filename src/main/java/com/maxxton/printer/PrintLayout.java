@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author hermans.s
  */
-public class PrintFormat
+public class PrintLayout
 {
 
   private final String format;
@@ -31,7 +31,7 @@ public class PrintFormat
    * {@code null} argument depends on the conversion.
    * @throws java.io.IOException
    */
-  public PrintFormat(File file, Object... args) throws IOException
+  public PrintLayout(File file, Object... args) throws IOException
   {
     this(new FileInputStream(file), args);
   }
@@ -48,7 +48,7 @@ public class PrintFormat
    * {@code null} argument depends on the conversion.
    * @throws java.io.IOException
    */
-  public PrintFormat(InputStream in, Object... args) throws IOException
+  public PrintLayout(InputStream in, Object... args) throws IOException
   {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     byte[] b = new byte[1024];
@@ -83,7 +83,7 @@ public class PrintFormat
    * <cite>The Java&trade; Virtual Machine Specification</cite>. The behaviour on a
    * {@code null} argument depends on the conversion.
    */
-  public PrintFormat(String format, Object... args)
+  public PrintLayout(String format, Object... args)
   {
     this.format = format;
 

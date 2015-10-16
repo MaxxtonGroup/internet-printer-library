@@ -10,13 +10,16 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Test PrintLayout class
+ * 
+ * Copyright Maxxton 2015
  *
  * @author hermans.s
  */
-public class PrintFormatTest
+public class PrintLayoutTest
 {
 
-  public PrintFormatTest()
+  public PrintLayoutTest()
   {
   }
 
@@ -46,7 +49,7 @@ public class PrintFormatTest
   @Test
   public void testFormat()
   {
-    PrintFormat format = new PrintFormat("hello %s", "world");
+    PrintLayout format = new PrintLayout("hello %s", "world");
     assertEquals("hello world", format.toString());
   }
 
@@ -59,7 +62,7 @@ public class PrintFormatTest
   public void testInputStream() throws IOException
   {
     ByteArrayInputStream buffer = new ByteArrayInputStream("hello %s".getBytes());
-    PrintFormat format = new PrintFormat(buffer, "world");
+    PrintLayout format = new PrintLayout(buffer, "world");
     assertEquals("hello world", format.toString());
   }
 }

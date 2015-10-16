@@ -29,7 +29,7 @@ public abstract class PrintJob
   /**
    * Create new PrintJob
    *
-   * @param printer LPR Printer
+   * @param printer  LPR Printer
    * @param document Document to be printed
    * @param protocol PrintProtocol
    */
@@ -49,7 +49,8 @@ public abstract class PrintJob
 
   /**
    * Start print job
-   * @throws PrintException 
+   *
+   * @throws PrintException
    */
   public void print() throws PrintException
   {
@@ -163,8 +164,9 @@ public abstract class PrintJob
     {
     }
   }
-  
-  protected PrinterConnection connect(int port) throws PrintException{
+
+  protected PrinterConnection connect(int port) throws PrintException
+  {
     return printer.connect(port);
   }
 
@@ -191,13 +193,22 @@ public abstract class PrintJob
   /**
    * Wait for job to finish
    *
-   * @throws InterruptedException
+   * @throws PrintException
    */
-  public void waitFor() throws InterruptedException
+  public void waitFor() throws PrintException
   {
-    while (isRunning())
+    try
     {
-      Thread.sleep(20);
+      while (isRunning())
+      {
+        Thread.sleep(20);
+      }
+    } catch (InterruptedException e)
+    {
+    }
+    if (error != null)
+    {
+      throw error;
     }
   }
 

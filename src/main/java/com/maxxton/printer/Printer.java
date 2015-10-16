@@ -5,6 +5,7 @@ import com.maxxton.printer.lpr.LPRPrintJob;
 import com.maxxton.printer.lpr.SimpleLPRPrintJob;
 import com.maxxton.printer.raw.RawPrintJob;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class Printer
 {
 
-  private final String host;
+  private String host;
   private int port = -1;
   private int timeout = 5000;
 
@@ -77,9 +78,19 @@ public class Printer
     return host;
   }
 
+  public void setHost(String host)
+  {
+    this.host = host;
+  }
+
   public int getPort()
   {
     return port;
+  }
+
+  public void setPort(int port)
+  {
+    this.port = port;
   }
 
   public int getTimeout()
@@ -142,8 +153,9 @@ public class Printer
     try
     {
       LOG.info("Connecting... to " + getHost() + ":" + port);
-      Socket socket = new Socket(getHost(), port);
+      Socket socket = new Socket();
       socket.setSoTimeout(getTimeout());
+      socket.connect(new InetSocketAddress(getHost(), port), getTimeout());
       LOG.info("Connected");
       return new PrinterConnection(socket);
     } catch (IOException e)

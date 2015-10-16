@@ -5,7 +5,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 /**
- * PrintDocument is the document to be printed. This document is build up with LPRCommands
+ * PrintDocument is the document to be printed. This document is build up with
+ * LPRCommands
  * and text. These commands and text are send to the printer in a PrintJob.
  *
  * @author Hermans.S Copyright Maxxton 2015
@@ -81,10 +82,10 @@ public class LPRDocument extends PrintDocument
   }
 
   /**
-   * Insert point for cutting the paper. Feed the paper for the cutting point by 6 Line
-   * Feeds
+   * Insert end of the document
    */
-  public void insertPaperCut()
+  @Override
+  public void insertDocumentEnd()
   {
     LPRDocument.this.insert(LPRCommand.LF, LPRCommand.LF, LPRCommand.LF, LPRCommand.LF, LPRCommand.LF, LPRCommand.LF, LPRCommand.GS_V);
   }

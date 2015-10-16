@@ -15,11 +15,13 @@ import static org.junit.Assert.*;
 
 /**
  * JUnit tests for PrintJob Check if print data is according to the LPR standard
+ * 
+ * Copyright Maxxton 2015
  *
  * @see PrintJob
  * @see https://www.ietf.org/rfc/rfc1179.txt
  *
- * @author Hermans.s Copyright Maxxton 2015
+ * @author Hermans.s
  */
 public class PrintJobTest
 {
@@ -54,7 +56,8 @@ public class PrintJobTest
   /**
    * Check if the first request to the printer for the printjob is correct
    *
-   * Print Job header +----+-------+----+ | 02 | Queue | LF | +----+-------+----+
+   * Print Job header +----+-------+----+ | 02 | Queue | LF |
+   * +----+-------+----+
    *
    * @see https://www.ietf.org/rfc/rfc1179.txt
    * @throws PrintException
@@ -104,7 +107,8 @@ public class PrintJobTest
   /**
    * Check if the control file and data file is sended correctly
    *
-   * Control File: +----+-------+----+------+----+ | 02 | Count | SP | Name | LF |
+   * Control File: +----+-------+----+------+----+ | 02 | Count | SP | Name | LF
+   * |
    * +----+-------+----+------+----+ ...bytes...NULL
    *
    * Data File: +----+-------+----+------+----+ | 03 | Count | SP | Name | LF |

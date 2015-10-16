@@ -8,34 +8,31 @@ import com.maxxton.printer.lpr.PrinterListener;
 import java.io.IOException;
 
 /**
- * This is an example for sending a print job to a network printer with lpr4java.
- * In this example the /bonexample file is printed on a receipt printer.
- * The next steps are done in order to accomplish this:
+ * This is an example for sending a print job to a network printer with lpr4java. In this
+ * example the /bonexample file is printed on a receipt printer. The next steps are done
+ * in order to accomplish this:
  * <ol>
- *   <li>
- *     Define the LPR printer: 
- *     Create a new LPRPrinter object and pass in the host name and optional the port number.
- *     The well known port for LPR is 515.
- *   </li>
- *   <li>
- *     Add attach a PrinterListener to the printer.
- *     With this listener you can catch the event when your PrintJob is complete, or when it failed.
- *   </li>
- *   <li>
- *     Create a new LPRDocument.
- *     This document is for contains the data to be send to the printer.
- *     You can also define in the LPRDocument LPRCommands, 
- *     like Cutting the paper or changing the CharacterSet.
- *   </li>
- *   <li>
- *     Finally you can print the document. The printer creates a new PrintJob 
- *     and schedule it so only one job can executed at the time for each printer.
- *   </li>
+ * <li>
+ * Define the LPR printer: Create a new LPRPrinter object and pass in the host name and
+ * optional the port number. The well known port for LPR is 515.
+ * </li>
+ * <li>
+ * Add attach a PrinterListener to the printer. With this listener you can catch the event
+ * when your PrintJob is complete, or when it failed.
+ * </li>
+ * <li>
+ * Create a new LPRDocument. This document is for contains the data to be send to the
+ * printer. You can also define in the LPRDocument LPRCommands, like Cutting the paper or
+ * changing the CharacterSet.
+ * </li>
+ * <li>
+ * Finally you can print the document. The printer creates a new PrintJob and schedule it
+ * so only one job can executed at the time for each printer.
+ * </li>
  * </ol>
- * 
- * 
- * @author Hermans.S
- * Copyright Maxxton 2015
+ *
+ *
+ * @author Hermans.S Copyright Maxxton 2015
  */
 public class PrintExample
 {

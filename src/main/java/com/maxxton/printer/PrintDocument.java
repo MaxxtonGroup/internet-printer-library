@@ -78,7 +78,7 @@ public class PrintDocument
 
   public void insert(char... characters)
   {
-    insert(new String(characters));
+    insert(new String(characters).getBytes());
   }
 
   /**
@@ -120,19 +120,19 @@ public class PrintDocument
   /**
    * Insert linebreak
    */
-  public void insertLineFeed()
+  public void insertNewLine()
   {
     insert('\n');
   }
 
   /**
-   * Insert print format
+   * Insert print layout
    *
-   * @param format PrintFormat
+   * @param layout PrintLayout
    */
-  public void insert(PrintFormat format)
+  public void insert(PrintLayout layout)
   {
-    insert(format.toString());
+    insert(layout.toString());
   }
 
   /**
@@ -143,6 +143,13 @@ public class PrintDocument
   public void insert(PrintDocument document)
   {
     insert(document.getRaw());
+  }
+
+  /**
+   * Insert end of the document
+   */
+  public void insertDocumentEnd()
+  {
   }
 
   /**

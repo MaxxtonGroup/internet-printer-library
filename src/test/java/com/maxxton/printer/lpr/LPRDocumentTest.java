@@ -14,9 +14,11 @@ import static org.junit.Assert.*;
 /**
  * JUnit tests for LPRDocument
  *
+ * Copyright Maxxton 2015
+ *
  * @see LPRDocument
  *
- * @author Hermans.S Copyright Maxxton 2015
+ * @author Hermans.S
  */
 public class LPRDocumentTest
 {
@@ -77,7 +79,7 @@ public class LPRDocumentTest
     LPRDocument doc = new LPRDocument("test doc");
 
     //Insert line feed
-    doc.insertLineFeed();
+    doc.insertNewLine();
 
     byte[] raw = doc.getRaw();
     assertEquals(raw.length, 1);
@@ -111,7 +113,7 @@ public class LPRDocumentTest
     LPRDocument doc = new LPRDocument("test doc");
 
     //Insert line feed
-    doc.insertPaperCut();
+    doc.insertDocumentEnd();
 
     //Check result
     byte[] check = new byte[]
