@@ -1,5 +1,7 @@
-package com.maxxton.printer;
+package com.maxxton.printer.lpr;
 
+import com.maxxton.printer.PrintException;
+import com.maxxton.printer.Printer;
 import com.maxxton.printer.lpr.LPRCommand;
 import com.maxxton.printer.lpr.LPRDocument;
 import java.io.ByteArrayInputStream;
@@ -14,7 +16,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * JUnit tests for PrintJob Check if print data is according to the LPR standard
+ * JUnit tests for LPRPrintJob.
+ * Check if print data is according to the LPR standard
  * 
  * Copyright Maxxton 2015
  *
@@ -23,12 +26,12 @@ import static org.junit.Assert.*;
  *
  * @author Hermans.s
  */
-public class PrintJobTest
+public class LPRPrintJobTest
 {
 
   private Printer printer;
 
-  public PrintJobTest()
+  public LPRPrintJobTest()
   {
   }
 
@@ -71,7 +74,7 @@ public class PrintJobTest
     LPRDocument document = new LPRDocument("test document");
 
     //Create print job
-    BufferedPrintJob printJob = new BufferedPrintJob(printer, document);
+    BufferedLPRPrintJob printJob = new BufferedLPRPrintJob(printer, document);
 
     //Execute print job
     printJob.print();
@@ -127,7 +130,7 @@ public class PrintJobTest
     document.insert(documentText);
 
     //Create print job
-    BufferedPrintJob printJob = new BufferedPrintJob(printer, document);
+    BufferedLPRPrintJob printJob = new BufferedLPRPrintJob(printer, document);
 
     //Execute print job
     printJob.print();

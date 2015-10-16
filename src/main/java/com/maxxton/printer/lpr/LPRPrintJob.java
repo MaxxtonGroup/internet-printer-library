@@ -9,6 +9,7 @@ import com.maxxton.printer.Printer;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 
@@ -76,7 +77,7 @@ public class LPRPrintJob extends PrintJob
    */
   protected void sendHeader(PrinterConnection printerConnection) throws IOException, PrintException
   {
-    BufferedReader printerIn = new BufferedReader(new InputStreamReader(printerConnection.getInputStream()));
+    InputStream printerIn = printerConnection.getInputStream();
     DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
 
     printerOut.write(02);
@@ -100,7 +101,7 @@ public class LPRPrintJob extends PrintJob
    */
   protected void sendControlFile(PrinterConnection printerConnection, String controlFile) throws IOException, PrintException
   {
-    BufferedReader printerIn = new BufferedReader(new InputStreamReader(printerConnection.getInputStream()));
+    InputStream printerIn = printerConnection.getInputStream();
     DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
 
     printerOut.write(02);
@@ -137,7 +138,7 @@ public class LPRPrintJob extends PrintJob
    */
   protected void sendDataFile(PrinterConnection printerConnection, byte[] dataFile, boolean secondCheck) throws IOException, PrintException
   {
-    BufferedReader printerIn = new BufferedReader(new InputStreamReader(printerConnection.getInputStream()));
+    InputStream printerIn = printerConnection.getInputStream();
     DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
 
     printerOut.write(03);

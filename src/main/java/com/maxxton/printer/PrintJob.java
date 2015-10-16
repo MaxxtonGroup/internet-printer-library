@@ -73,7 +73,6 @@ public abstract class PrintJob
 
       byte[] buffer = new byte[1024];
       int l;
-      printerConnection.getSocket().setSoTimeout(100);
       try
       {
         while ((l = printerConnection.getInputStream().read(buffer)) != -1)

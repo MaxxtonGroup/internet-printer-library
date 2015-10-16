@@ -1,5 +1,8 @@
-package com.maxxton.printer;
+package com.maxxton.printer.lpr;
 
+import com.maxxton.printer.PrintException;
+import com.maxxton.printer.Printer;
+import com.maxxton.printer.PrinterConnection;
 import com.maxxton.printer.lpr.LPRDocument;
 import com.maxxton.printer.lpr.LPRPrintJob;
 import java.io.ByteArrayInputStream;
@@ -14,13 +17,13 @@ import java.io.ByteArrayOutputStream;
  *
  * @author Hermans.S
  */
-public class BufferedPrintJob extends LPRPrintJob
+public class BufferedLPRPrintJob extends LPRPrintJob
 {
 
   private ByteArrayOutputStream buffer;
   private ByteArrayInputStream input;
 
-  public BufferedPrintJob(Printer printer, LPRDocument doc)
+  public BufferedLPRPrintJob(Printer printer, LPRDocument doc)
   {
     super(printer, doc);
   }
