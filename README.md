@@ -15,17 +15,23 @@ This library also supports LPR commands and FGL markup.
  
 ## Get started
  1. Define your printer
+
     ```
     Printer printer = new Printer(ip);
     ```
+
  2. Create a document
+
     ```
     PrintDocument document = new PrintDocument("document name");
     document.insert("hello world!");
     ```
+
  3. Print the document
+
     ```
     printer.print(document, PrintProtocol.RAW);
     ```
+
 
 
