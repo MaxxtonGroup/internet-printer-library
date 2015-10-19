@@ -70,8 +70,9 @@ public class PrintDocument
    * Insert text as string
    *
    * @param string text
+   * @throws com.maxxton.printer.PrintFormatException
    */
-  public void insert(String string)
+  public void insert(String string) throws PrintFormatException
   {
     insert(string.getBytes());
   }
@@ -86,8 +87,9 @@ public class PrintDocument
    *
    * @param in
    * @throws IOException
+   * @throws com.maxxton.printer.PrintFormatException
    */
-  public void insert(InputStream in) throws IOException
+  public void insert(InputStream in) throws IOException, PrintFormatException
   {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     byte[] b = new byte[1024];
@@ -111,8 +113,9 @@ public class PrintDocument
    *
    * @param file
    * @throws IOException
+   * @throws com.maxxton.printer.PrintFormatException
    */
-  public void insert(File file) throws IOException
+  public void insert(File file) throws IOException, PrintFormatException
   {
     insert(new FileInputStream(file));
   }
@@ -129,8 +132,9 @@ public class PrintDocument
    * Insert print layout
    *
    * @param layout PrintLayout
+   * @throws com.maxxton.printer.PrintFormatException
    */
-  public void insert(PrintLayout layout)
+  public void insert(PrintLayout layout) throws PrintFormatException
   {
     insert(layout.toString());
   }

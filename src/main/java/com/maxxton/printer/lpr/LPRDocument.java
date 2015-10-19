@@ -1,6 +1,7 @@
 package com.maxxton.printer.lpr;
 
 import com.maxxton.printer.PrintDocument;
+import com.maxxton.printer.PrintFormatException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
@@ -25,9 +26,10 @@ public class LPRDocument extends PrintDocument
    * Insert text as string
    *
    * @param string text
+   * @throws com.maxxton.printer.PrintFormatException
    */
   @Override
-  public void insert(String string)
+  public void insert(String string) throws PrintFormatException
   {
     byte[] bytes = string.getBytes(charset.getCharset());
     insert(bytes);

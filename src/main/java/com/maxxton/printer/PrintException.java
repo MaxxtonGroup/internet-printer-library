@@ -9,6 +9,10 @@ package com.maxxton.printer;
  */
 public class PrintException extends Exception
 {
+  
+  public PrintException(){
+    super();
+  }
 
   public PrintException(String msg)
   {

@@ -1,5 +1,6 @@
 package com.maxxton.printer.fgl;
 
+import com.maxxton.printer.PrintFormatException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -59,7 +60,7 @@ public class FGLDocumentTest
       doc.insert("7");
       doc.insert("8");
       assertTrue(true);
-    }catch(FGLFormatException e){
+    }catch(PrintFormatException e){
       fail("8");
     }
     //Test 9
@@ -75,7 +76,7 @@ public class FGLDocumentTest
       doc.insert("8");
       doc.insert("9");
       assertTrue(true);
-    }catch(FGLFormatException e){
+    }catch(PrintFormatException e){
       fail("9");
     }
     //Test 10
@@ -92,7 +93,7 @@ public class FGLDocumentTest
       doc.insert("9");
       doc.insert("10");
       fail("10");
-    }catch(FGLFormatException e){
+    }catch(PrintFormatException e){
       assertTrue(true);
     }
   }
@@ -107,7 +108,7 @@ public class FGLDocumentTest
       FGLDocument doc = new FGLDocument("");
       doc.insert("123456789012345678901234567890");
       assertTrue(true);
-    }catch(FGLFormatException e){
+    }catch(PrintFormatException e){
       fail("30");
     }
     //Test 31
@@ -115,7 +116,7 @@ public class FGLDocumentTest
       FGLDocument doc = new FGLDocument("");
       doc.insert("1234567890123456789012345678901");
       assertTrue(true);
-    }catch(FGLFormatException e){
+    }catch(PrintFormatException e){
       fail("31");
     }
     //Test 32
@@ -123,7 +124,7 @@ public class FGLDocumentTest
       FGLDocument doc = new FGLDocument("");
       doc.insert("12345678901234567890123456789012");
       fail("32");
-    }catch(FGLFormatException e){
+    }catch(PrintFormatException e){
       assertTrue(true);
     }
   }
