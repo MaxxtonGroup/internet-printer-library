@@ -96,7 +96,7 @@ public class PrintDocumentTest
    * @throws java.io.IOException
    */
   @Test
-  public void insertFromInputstream() throws IOException
+  public void insertFromInputstream() throws IOException, PrintFormatException
   {
     //Create new document
     PrintDocument doc = new PrintDocument("test doc");

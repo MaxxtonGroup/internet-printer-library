@@ -1,5 +1,6 @@
 package com.maxxton.printer.lpr;
 
+import com.maxxton.printer.PrintFormatException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -53,7 +54,7 @@ public class LPRDocumentTest
    * @throws java.io.IOException
    */
   @Test
-  public void insertFromInputstream() throws IOException
+  public void insertFromInputstream() throws IOException, PrintFormatException
   {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");
@@ -137,7 +138,7 @@ public class LPRDocumentTest
    * @throws java.io.UnsupportedEncodingException
    */
   @Test
-  public void testDefaultCharacterSet() throws UnsupportedEncodingException
+  public void testDefaultCharacterSet() throws UnsupportedEncodingException, PrintFormatException
   {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");
@@ -175,7 +176,7 @@ public class LPRDocumentTest
    * @throws java.io.UnsupportedEncodingException
    */
   @Test
-  public void testOtherCharacterSet() throws UnsupportedEncodingException
+  public void testOtherCharacterSet() throws UnsupportedEncodingException, PrintFormatException
   {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");

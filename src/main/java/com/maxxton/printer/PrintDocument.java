@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- *
+ * PrintDocument is the document to be printed
+ * 
  * Copyright Maxxton 2015
  *
  * @author Hermans.S
@@ -198,7 +199,13 @@ public class PrintDocument
   public byte[] getRaw()
   {
     byte[] raw = buffer.toByteArray();
-    return raw;
+    byte[] copied = new byte[raw.length*getCopies()];
+    for(int i = 0; i < raw.length; i++){
+      for(int j = 0; j < getCopies(); j++){
+        copied[raw.length*j + i] = raw[i];
+      }
+    }
+    return copied;
   }
 
 }
