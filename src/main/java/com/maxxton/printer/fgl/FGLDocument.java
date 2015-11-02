@@ -222,6 +222,9 @@ public class FGLDocument extends PrintDocument
     {
       lines.add(curLine);
     }
+    if(lines.isEmpty()){
+      lines.add("");
+    }
     return lines;
   }
 
