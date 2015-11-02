@@ -67,20 +67,20 @@ public abstract class PrintJob
       //Execute command
       execute(printerConnection);
 
-      byte[] buffer = new byte[1024];
-      int l;
-      try
-      {
-        while ((l = printerConnection.getInputStream().read(buffer)) != -1)
-        {
-          for (int i = 0; i < l; i++)
-          {
-            System.out.println("Received: " + String.valueOf(buffer[i]));
-          }
-        }
-      } catch (IOException e)
-      {
-      }
+//      byte[] buffer = new byte[1024];
+//      int l;
+//      try
+//      {
+//        while ((l = printerConnection.getInputStream().read(buffer)) != -1)
+//        {
+//          for (int i = 0; i < l; i++)
+//          {
+//            System.out.println("Received: " + String.valueOf(buffer[i]));
+//          }
+//        }
+//      } catch (IOException e)
+//      {
+//      }
 
       close(printerConnection);
       LOG.info("PrintJob Compleet!");

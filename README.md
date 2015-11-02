@@ -1,5 +1,5 @@
 # Internet Printer Library
-Light weight Java library for controlling printers over IP.
+Java library for controlling printers over IP.
 This library supports the following print protocols:
 * RAW
 * LPR
