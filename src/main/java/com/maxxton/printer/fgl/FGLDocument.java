@@ -77,22 +77,30 @@ public class FGLDocument extends PrintDocument
   @Override
   public void insert(String text) throws PrintFormatException
   {
-    String[] lines = text.split("\n|\\\\n");
-    ArrayList<String> newLines = new ArrayList();
-    for (String line : lines)
+    String[] tickets = text.split("<p>");
+    for(int i = 0; i < tickets.length; i++)
     {
-      newLines.addAll(splitLargeLines(line, MAX_ROW_LENGTH));
-    }
-    
-    for (String newLine : newLines)
-    {
-      insert(orientation);
-      insertFont(font);
-      currentRow += SPACE_BETWEEN_ROW;
-      insertRowAndColumn(621, currentRow);
-      insertFontHeightWidht(fontHeight, fontWidth);
-      super.insert(newLine);
-      insertNewLine();
+      String[] lines = tickets[i].split("\n|\\\\n");
+      ArrayList<String> newLines = new ArrayList();
+      for (String line : lines)
+      {
+        newLines.addAll(splitLargeLines(line, MAX_ROW_LENGTH));
+      }
+
+      for (String newLine : newLines)
+      {
+        insert(orientation);
+        insertFont(font);
+        currentRow += SPACE_BETWEEN_ROW;
+        insertRowAndColumn(621, currentRow);
+        insertFontHeightWidht(fontHeight, fontWidth);
+        super.insert(newLine);
+        insertNewLine();
+      }
+      if(i +1 != tickets.length){
+        super.insert("<p>");
+      }
+      currentRow = 0;
     }
   }
 
