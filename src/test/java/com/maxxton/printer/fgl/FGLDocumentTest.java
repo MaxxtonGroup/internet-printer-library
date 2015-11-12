@@ -41,62 +41,6 @@ public class FGLDocumentTest
   public void tearDown()
   {
   }
-
-  /**
-   * Test the max row count of 9
-   */
-  @Test
-  public void testMaxRowCount()
-  {
-    //Test 8
-    try{
-      FGLDocument doc = new FGLDocument("");
-      doc.insert("1");
-      doc.insert("2");
-      doc.insert("3");
-      doc.insert("4");
-      doc.insert("5");
-      doc.insert("6");
-      doc.insert("7");
-      doc.insert("8");
-      assertTrue(true);
-    }catch(PrintFormatException e){
-      fail("8");
-    }
-    //Test 9
-    try{
-      FGLDocument doc = new FGLDocument("");
-      doc.insert("1");
-      doc.insert("2");
-      doc.insert("3");
-      doc.insert("4");
-      doc.insert("5");
-      doc.insert("6");
-      doc.insert("7");
-      doc.insert("8");
-      doc.insert("9");
-      assertTrue(true);
-    }catch(PrintFormatException e){
-      fail("9");
-    }
-    //Test 10
-    try{
-      FGLDocument doc = new FGLDocument("");
-      doc.insert("1");
-      doc.insert("2");
-      doc.insert("3");
-      doc.insert("4");
-      doc.insert("5");
-      doc.insert("6");
-      doc.insert("7");
-      doc.insert("8");
-      doc.insert("9");
-      doc.insert("10");
-      fail("10");
-    }catch(PrintFormatException e){
-      assertTrue(true);
-    }
-  }
   
   /**
    * Test the max row length of 31

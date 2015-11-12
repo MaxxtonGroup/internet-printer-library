@@ -83,16 +83,12 @@ public class FGLDocument extends PrintDocument
     {
       newLines.addAll(splitLargeLines(line, MAX_ROW_LENGTH));
     }
-
+    
     for (String newLine : newLines)
     {
       insert(orientation);
       insertFont(font);
       currentRow += SPACE_BETWEEN_ROW;
-      if (currentRow / SPACE_BETWEEN_ROW > MAX_ROW_COUNT)
-      {
-        throw new PrintFormatException("Max row count exceeded: " + (currentRow / SPACE_BETWEEN_ROW) + " (max: " + MAX_ROW_COUNT + ")");
-      }
       insertRowAndColumn(621, currentRow);
       insertFontHeightWidht(fontHeight, fontWidth);
       super.insert(newLine);
