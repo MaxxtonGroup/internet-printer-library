@@ -3,7 +3,7 @@ Java library for controlling printers over IP.
 This library supports the following print protocols:
 * RAW
 * LPR
-* Simple LPR (Bota printers)
+* Simple LPR (Boca printers)
 
 This library also supports LPR commands and FGL markup.
 
