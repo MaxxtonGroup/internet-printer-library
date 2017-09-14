@@ -205,7 +205,7 @@ public class Printer
       return true;
     } catch (PrintException e)
     {
-      LOG.warning(e.getMessage());
+      LOG.debug(e.getMessage(), e);
       return false;
     }
   }
