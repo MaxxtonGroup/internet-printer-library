@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  * Printer object which contains information about the printer
@@ -205,7 +206,7 @@ public class Printer
       return true;
     } catch (PrintException e)
     {
-      LOG.debug(e.getMessage(), e);
+      LOG.log(Level.FINER, e.getMessage(), e);
       return false;
     }
   }
