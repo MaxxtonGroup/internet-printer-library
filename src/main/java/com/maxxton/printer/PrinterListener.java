@@ -7,8 +7,7 @@ package com.maxxton.printer;
  * @see PrintEvent
  * @see PrintJob
  */
-public interface PrinterListener
-{
+public interface PrinterListener {
 
   public void printSucceed(PrintEvent event);
 

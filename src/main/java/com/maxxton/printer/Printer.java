@@ -1,9 +1,11 @@
 package com.maxxton.printer;
 
 import static com.maxxton.printer.PrintJob.LOG;
+
 import com.maxxton.printer.lpr.LPRPrintJob;
 import com.maxxton.printer.lpr.SimpleLPRPrintJob;
 import com.maxxton.printer.raw.RawPrintJob;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -15,8 +17,7 @@ import java.util.logging.Level;
  *
  * @author Hermans.S Copyright Maxxton 2015
  */
-public class Printer
-{
+public class Printer {
 
   private String host;
   private int port = -1;
@@ -29,8 +30,7 @@ public class Printer
    *
    * @param host Printer ip address
    */
-  public Printer(String host)
-  {
+  public Printer(String host) {
     this.host = host;
   }
 
@@ -40,8 +40,7 @@ public class Printer
    * @param host Printer ip address
    * @param port Printer port
    */
-  public Printer(String host, int port)
-  {
+  public Printer(String host, int port) {
     this.host = host;
     this.port = port;
   }
@@ -53,20 +52,18 @@ public class Printer
    * @param protocol Print protocol
    * @return PrintJob
    */
-  public PrintJob print(PrintDocument document, PrintProtocol protocol)
-  {
+  public PrintJob print(PrintDocument document, PrintProtocol protocol) {
     PrintJob printJob;
-    if (protocol.equals(PrintProtocol.RAW))
-    {
+    if (protocol.equals(PrintProtocol.RAW)) {
       printJob = new RawPrintJob(this, document);
-    } else if (protocol.equals(PrintProtocol.LPR))
-    {
+    }
+    else if (protocol.equals(PrintProtocol.LPR)) {
       printJob = new LPRPrintJob(this, document);
-    } else if (protocol.equals(PrintProtocol.SIMPLE_LPR))
-    {
+    }
+    else if (protocol.equals(PrintProtocol.SIMPLE_LPR)) {
       printJob = new SimpleLPRPrintJob(this, document);
-    } else
-    {
+    }
+    else {
       throw new IllegalArgumentException("Unknown protocol");
     }
 
@@ -74,48 +71,39 @@ public class Printer
     return printJob;
   }
 
-  public String getHost()
-  {
+  public String getHost() {
     return host;
   }
 
-  public void setHost(String host)
-  {
+  public void setHost(String host) {
     this.host = host;
   }
 
-  public int getPort()
-  {
+  public int getPort() {
     return port;
   }
 
-  public void setPort(int port)
-  {
+  public void setPort(int port) {
     this.port = port;
   }
 
-  public int getTimeout()
-  {
+  public int getTimeout() {
     return timeout;
   }
 
-  public void setTimeout(int timeout)
-  {
+  public void setTimeout(int timeout) {
     this.timeout = timeout;
   }
 
-  public void addPrintListener(PrinterListener listener)
-  {
+  public void addPrintListener(PrinterListener listener) {
     listeners.add(listener);
   }
 
-  public void removePrintListener(PrinterListener listener)
-  {
+  public void removePrintListener(PrinterListener listener) {
     listeners.remove(listener);
   }
 
-  public PrinterListener[] getPrintListeners()
-  {
+  public PrinterListener[] getPrintListeners() {
     return listeners.toArray(new PrinterListener[listeners.size()]);
   }
 
@@ -125,8 +113,7 @@ public class Printer
    * @return printer connection
    * @throws PrintException connection error
    */
-  public PrinterConnection connect() throws PrintException
-  {
+  public PrinterConnection connect() throws PrintException {
     return connect(port);
   }
 
@@ -137,8 +124,7 @@ public class Printer
    * @return printer connection
    * @throws PrintException connection error
    */
-  public PrinterConnection connect(PrintProtocol protocol) throws PrintException
-  {
+  public PrinterConnection connect(PrintProtocol protocol) throws PrintException {
     return connect(protocol.getPort());
   }
 
@@ -149,18 +135,16 @@ public class Printer
    * @return printer connection
    * @throws PrintException connection error
    */
-  public PrinterConnection connect(int port) throws PrintException
-  {
-    try
-    {
+  public PrinterConnection connect(int port) throws PrintException {
+    try {
       LOG.info("Connecting... to " + getHost() + ":" + port);
       Socket socket = new Socket();
       socket.setSoTimeout(getTimeout());
       socket.connect(new InetSocketAddress(getHost(), port), getTimeout());
       LOG.info("Connected");
       return new PrinterConnection(socket);
-    } catch (IOException e)
-    {
+    }
+    catch (IOException e) {
       throw new PrintException("Printer offline", e);
     }
   }
@@ -170,8 +154,7 @@ public class Printer
    *
    * @return true if the printer is available, otherwise false
    */
-  public boolean available()
-  {
+  public boolean available() {
     return available(port);
   }
 
@@ -181,8 +164,7 @@ public class Printer
    * @param protocol protocol for the ocnnection with the printer
    * @return true if the printer is available, otherwise false
    */
-  public boolean available(PrintProtocol protocol)
-  {
+  public boolean available(PrintProtocol protocol) {
     return available(protocol.getPort());
   }
 
@@ -192,20 +174,17 @@ public class Printer
    * @param port number for the connection with the printer
    * @return true if the printer is available, otherwise false
    */
-  public boolean available(int port)
-  {
-    try
-    {
+  public boolean available(int port) {
+    try {
       PrinterConnection connection = connect(port);
-      try
-      {
+      try {
         connection.close();
-      } catch (IOException e)
-      {
+      }
+      catch (IOException e) {
       }
       return true;
-    } catch (PrintException e)
-    {
+    }
+    catch (PrintException e) {
       LOG.log(Level.FINER, e.getMessage(), e);
       return false;
     }

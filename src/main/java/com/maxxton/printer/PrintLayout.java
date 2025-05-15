@@ -13,8 +13,7 @@ import java.util.Map;
  *
  * @author hermans.s
  */
-public class PrintLayout
-{
+public class PrintLayout {
 
   private final String format;
   private final Map<Integer, Object> args;
@@ -31,8 +30,7 @@ public class PrintLayout
    * {@code null} argument depends on the conversion.
    * @throws java.io.IOException
    */
-  public PrintLayout(File file, Object... args) throws IOException
-  {
+  public PrintLayout(File file, Object... args) throws IOException {
     this(new FileInputStream(file), args);
   }
 
@@ -48,26 +46,22 @@ public class PrintLayout
    * {@code null} argument depends on the conversion.
    * @throws java.io.IOException
    */
-  public PrintLayout(InputStream in, Object... args) throws IOException
-  {
+  public PrintLayout(InputStream in, Object... args) throws IOException {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     byte[] b = new byte[1024];
     int l;
-    while ((l = in.read(b)) != -1)
-    {
+    while ((l = in.read(b)) != -1) {
       bytes.write(b, 0, l);
     }
-    try
-    {
+    try {
       in.close();
-    } catch (IOException e)
-    {
+    }
+    catch (IOException e) {
     }
     format = new String(bytes.toByteArray());
 
     this.args = new HashMap();
-    for (int i = 0; i < args.length; i++)
-    {
+    for (int i = 0; i < args.length; i++) {
       this.args.put(i, args[i]);
     }
   }
@@ -83,13 +77,11 @@ public class PrintLayout
    * <cite>The Java&trade; Virtual Machine Specification</cite>. The behaviour on a
    * {@code null} argument depends on the conversion.
    */
-  public PrintLayout(String format, Object... args)
-  {
+  public PrintLayout(String format, Object... args) {
     this.format = format;
 
     this.args = new HashMap();
-    for (int i = 0; i < args.length; i++)
-    {
+    for (int i = 0; i < args.length; i++) {
       this.args.put(i, args[i]);
     }
   }
@@ -100,8 +92,7 @@ public class PrintLayout
    * @param index The index of the argument
    * @param arg The argument
    */
-  public void setArgument(int index, Object arg)
-  {
+  public void setArgument(int index, Object arg) {
     this.args.put(index, arg);
   }
 
@@ -111,19 +102,15 @@ public class PrintLayout
    * @return formatted String
    */
   @Override
-  public String toString()
-  {
+  public String toString() {
     int max = 0;
-    for (Integer i : args.keySet())
-    {
-      if (i > max)
-      {
+    for (Integer i : args.keySet()) {
+      if (i > max) {
         max = i;
       }
     }
     Object[] a = new Object[max + 1];
-    for (int i = 0; i < max + 1; i++)
-    {
+    for (int i = 0; i < max + 1; i++) {
       a[i] = args.get(i);
     }
     return String.format(format, a);

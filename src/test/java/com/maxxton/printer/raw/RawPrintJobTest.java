@@ -5,11 +5,13 @@ import com.maxxton.printer.PrintException;
 import com.maxxton.printer.Printer;
 import com.maxxton.printer.lpr.BufferedLPRPrintJob;
 import com.maxxton.printer.lpr.LPRDocument;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -19,38 +21,31 @@ import static org.junit.Assert.*;
  *
  * @author hermans.s
  */
-public class RawPrintJobTest
-{
+public class RawPrintJobTest {
   private Printer printer;
 
-  public RawPrintJobTest()
-  {
+  public RawPrintJobTest() {
   }
 
   @BeforeClass
-  public static void setUpClass()
-  {
+  public static void setUpClass() {
   }
 
   @AfterClass
-  public static void tearDownClass()
-  {
+  public static void tearDownClass() {
   }
 
   @Before
-  public void setUp()
-  {
+  public void setUp() {
     printer = new Printer("localhost");
   }
 
   @After
-  public void tearDown()
-  {
+  public void tearDown() {
   }
 
   @Test
-  public void testPrintJob() throws PrintException
-  {
+  public void testPrintJob() throws PrintException {
     //Create document
     PrintDocument document = new PrintDocument("test document");
     document.insert("test");

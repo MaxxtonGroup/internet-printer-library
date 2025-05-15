@@ -1,15 +1,18 @@
 package com.maxxton.printer.lpr;
 
 import com.maxxton.printer.PrintFormatException;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -17,35 +20,28 @@ import static org.junit.Assert.*;
  *
  * Copyright Maxxton 2015
  *
- * @see LPRDocument
- *
  * @author Hermans.S
+ * @see LPRDocument
  */
-public class LPRDocumentTest
-{
+public class LPRDocumentTest {
 
-  public LPRDocumentTest()
-  {
+  public LPRDocumentTest() {
   }
 
   @BeforeClass
-  public static void setUpClass()
-  {
+  public static void setUpClass() {
   }
 
   @AfterClass
-  public static void tearDownClass()
-  {
+  public static void tearDownClass() {
   }
 
   @Before
-  public void setUp()
-  {
+  public void setUp() {
   }
 
   @After
-  public void tearDown()
-  {
+  public void tearDown() {
   }
 
   /**
@@ -54,8 +50,7 @@ public class LPRDocumentTest
    * @throws java.io.IOException
    */
   @Test
-  public void insertFromInputstream() throws IOException, PrintFormatException
-  {
+  public void insertFromInputstream() throws IOException, PrintFormatException {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");
 
@@ -74,8 +69,7 @@ public class LPRDocumentTest
    * Test if linefeed is inserted correctly
    */
   @Test
-  public void insertLineFeed()
-  {
+  public void insertLineFeed() {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");
 
@@ -91,8 +85,7 @@ public class LPRDocumentTest
    * Test if tab is inserted correctly
    */
   @Test
-  public void insertTab()
-  {
+  public void insertTab() {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");
 
@@ -108,8 +101,7 @@ public class LPRDocumentTest
    * Test if papercut is inserted correctly
    */
   @Test
-  public void insertPaperCut()
-  {
+  public void insertPaperCut() {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");
 
@@ -117,17 +109,9 @@ public class LPRDocumentTest
     doc.insertDocumentEnd();
 
     //Check result
-    byte[] check = new byte[]
-    {
-      LPRCommand.LF.getCodes()[0],
-      LPRCommand.LF.getCodes()[0],
-      LPRCommand.LF.getCodes()[0],
-      LPRCommand.LF.getCodes()[0],
-      LPRCommand.LF.getCodes()[0],
-      LPRCommand.LF.getCodes()[0],
-      LPRCommand.GS_V.getCodes()[0],
-      LPRCommand.GS_V.getCodes()[1]
-    };
+    byte[] check = new byte[] { LPRCommand.LF.getCodes()[0], LPRCommand.LF.getCodes()[0], LPRCommand.LF.getCodes()[0],
+        LPRCommand.LF.getCodes()[0], LPRCommand.LF.getCodes()[0], LPRCommand.LF.getCodes()[0],
+        LPRCommand.GS_V.getCodes()[0], LPRCommand.GS_V.getCodes()[1] };
     byte[] raw = doc.getRaw();
     assertArrayEquals(check, raw);
   }
@@ -138,15 +122,13 @@ public class LPRDocumentTest
    * @throws java.io.UnsupportedEncodingException
    */
   @Test
-  public void testDefaultCharacterSet() throws UnsupportedEncodingException, PrintFormatException
-  {
+  public void testDefaultCharacterSet() throws UnsupportedEncodingException, PrintFormatException {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");
 
     //Generate example data
     byte[] asciiBytes = new byte[256];
-    for (int i = 0; i <= 255; i++)
-    {
+    for (int i = 0; i <= 255; i++) {
       asciiBytes[i] = (byte) i;
     }
     String asciiString = new String(asciiBytes, "ASCII");
@@ -158,14 +140,12 @@ public class LPRDocumentTest
     byte[] raw = doc.getRaw();
 
     //Only the first 128 bytes should be the same
-    for (int i = 0; i < 128; i++)
-    {
+    for (int i = 0; i < 128; i++) {
       assertEquals(asciiBytes[i], raw[i]);
     }
 
     //Last 128 bytes should be differend
-    for (int i = 128; i < 256; i++)
-    {
+    for (int i = 128; i < 256; i++) {
       assertEquals(63, raw[i]);
     }
   }
@@ -176,8 +156,7 @@ public class LPRDocumentTest
    * @throws java.io.UnsupportedEncodingException
    */
   @Test
-  public void testOtherCharacterSet() throws UnsupportedEncodingException, PrintFormatException
-  {
+  public void testOtherCharacterSet() throws UnsupportedEncodingException, PrintFormatException {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");
 
@@ -186,8 +165,7 @@ public class LPRDocumentTest
 
     //Generate example data
     byte[] ibm437Bytes = new byte[256];
-    for (int i = 0; i <= 255; i++)
-    {
+    for (int i = 0; i <= 255; i++) {
       ibm437Bytes[i] = (byte) i;
     }
     String asciiString = new String(ibm437Bytes, "IBM437");
@@ -200,16 +178,11 @@ public class LPRDocumentTest
 
     //Get first 3 bytes for changing the charset
     byte[] charsetCommand = Arrays.copyOfRange(raw, 0, 3);
-    byte[] checkCommand = new byte[]
-    {
-      LPRCommand.ESC_37.getCodes()[0],
-      LPRCommand.ESC_37.getCodes()[1], (byte) 1
-    };
+    byte[] checkCommand = new byte[] { LPRCommand.ESC_37.getCodes()[0], LPRCommand.ESC_37.getCodes()[1], (byte) 1 };
     assertArrayEquals(checkCommand, charsetCommand);
 
     //Only the first 128 bytes should be the same
-    for (int i = 0; i < 256; i++)
-    {
+    for (int i = 0; i < 256; i++) {
       assertEquals(ibm437Bytes[i], raw[i + 3]);
     }
   }

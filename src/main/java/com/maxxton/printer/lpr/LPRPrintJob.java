@@ -6,6 +6,7 @@ import com.maxxton.printer.PrintJob;
 import com.maxxton.printer.PrintProtocol;
 import com.maxxton.printer.PrinterConnection;
 import com.maxxton.printer.Printer;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -23,8 +24,7 @@ import java.net.InetAddress;
  *
  * @author Hermans.S Copyright Maxxton 2015
  */
-public class LPRPrintJob extends PrintJob
-{
+public class LPRPrintJob extends PrintJob {
 
   private final String jobId;
   private String user = System.getProperty("user.name");
@@ -36,15 +36,13 @@ public class LPRPrintJob extends PrintJob
    * @param printer LPR Printer
    * @param document Document to be printed
    */
-  public LPRPrintJob(Printer printer, PrintDocument document)
-  {
+  public LPRPrintJob(Printer printer, PrintDocument document) {
     super(printer, document, PrintProtocol.LPR);
     jobId = getNewJobId();
-    try
-    {
+    try {
       hostname = InetAddress.getLocalHost().getHostName();
-    } catch (Exception e)
-    {
+    }
+    catch (Exception e) {
     }
   }
 
@@ -55,8 +53,7 @@ public class LPRPrintJob extends PrintJob
    * @throws Exception
    */
   @Override
-  public void execute(PrinterConnection printerConnection) throws Exception
-  {
+  public void execute(PrinterConnection printerConnection) throws Exception {
     // Create control file
     String controlFile = createControlFile();
     // Create document
@@ -75,8 +72,7 @@ public class LPRPrintJob extends PrintJob
    * @throws IOException
    * @throws PrintException
    */
-  protected void sendHeader(PrinterConnection printerConnection) throws IOException, PrintException
-  {
+  protected void sendHeader(PrinterConnection printerConnection) throws IOException, PrintException {
     InputStream printerIn = printerConnection.getInputStream();
     DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
 
@@ -85,8 +81,7 @@ public class LPRPrintJob extends PrintJob
     printerOut.write(LPRCommand.LF.getCodes());
     printerOut.flush();
 
-    if (printerIn.read() != 0)
-    {
+    if (printerIn.read() != 0) {
       throw new PrintException("Error while start printing on the queue");
     }
   }
@@ -99,8 +94,8 @@ public class LPRPrintJob extends PrintJob
    * @throws IOException
    * @throws PrintException
    */
-  protected void sendControlFile(PrinterConnection printerConnection, String controlFile) throws IOException, PrintException
-  {
+  protected void sendControlFile(PrinterConnection printerConnection, String controlFile)
+      throws IOException, PrintException {
     InputStream printerIn = printerConnection.getInputStream();
     DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
 
@@ -111,8 +106,7 @@ public class LPRPrintJob extends PrintJob
     printerOut.write(LPRCommand.LF.getCodes());
     printerOut.flush();
 
-    if (printerIn.read() != 0)
-    {
+    if (printerIn.read() != 0) {
       throw new PrintException("Error while start sending control file");
     }
 
@@ -121,8 +115,7 @@ public class LPRPrintJob extends PrintJob
     printerOut.write(LPRCommand.NULL.getCodes());
     printerOut.flush();
 
-    if (printerIn.read() != 0)
-    {
+    if (printerIn.read() != 0) {
       throw new PrintException("Error while sending control file");
     }
   }
@@ -136,8 +129,8 @@ public class LPRPrintJob extends PrintJob
    * @throws IOException
    * @throws PrintException
    */
-  protected void sendDataFile(PrinterConnection printerConnection, byte[] dataFile, boolean secondCheck) throws IOException, PrintException
-  {
+  protected void sendDataFile(PrinterConnection printerConnection, byte[] dataFile, boolean secondCheck)
+      throws IOException, PrintException {
     InputStream printerIn = printerConnection.getInputStream();
     DataOutputStream printerOut = new DataOutputStream(printerConnection.getOutputStream());
 
@@ -148,8 +141,7 @@ public class LPRPrintJob extends PrintJob
     printerOut.write(LPRCommand.LF.getCodes());
     printerOut.flush();
 
-    if (printerIn.read() != 0)
-    {
+    if (printerIn.read() != 0) {
       throw new PrintException("Error while start sending data file");
     }
 
@@ -157,10 +149,8 @@ public class LPRPrintJob extends PrintJob
     printerOut.writeByte(0);
     printerOut.flush();
 
-    if (secondCheck)
-    {
-      if (printerIn.read() != 0)
-      {
+    if (secondCheck) {
+      if (printerIn.read() != 0) {
         throw new PrintException("Error while sending data file");
       }
     }
@@ -171,12 +161,10 @@ public class LPRPrintJob extends PrintJob
    *
    * @return control file
    */
-  private String createControlFile()
-  {
+  private String createControlFile() {
     String controlFile = "";
 
-    if (hostname != null)
-    {
+    if (hostname != null) {
       controlFile += ("H" + hostname + "\n");
     }
 
@@ -186,8 +174,7 @@ public class LPRPrintJob extends PrintJob
 
     controlFile += ("UdfA" + jobId + hostname + "\n");
 
-    for (int i = 0; i < getDocument().getCopies(); i++)
-    {
+    for (int i = 0; i < getDocument().getCopies(); i++) {
       controlFile += ("ldfA" + jobId + user + "\n");
     }
 
@@ -196,18 +183,15 @@ public class LPRPrintJob extends PrintJob
     return controlFile;
   }
 
-  public int getJobId()
-  {
+  public int getJobId() {
     return Integer.parseInt(jobId);
   }
 
-  public String getUser()
-  {
+  public String getUser() {
     return user;
   }
 
-  public String getHostname()
-  {
+  public String getHostname() {
     return hostname;
   }
 
@@ -216,14 +200,12 @@ public class LPRPrintJob extends PrintJob
    *
    * @return number between 000-999
    */
-  private String getNewJobId()
-  {
+  private String getNewJobId() {
     String data = String.valueOf((int) Math.floor(Math.random() * 999));
     int size = 3;
     String filler = "0";
 
-    while ((data.length() < size))
-    {
+    while ((data.length() < size)) {
       data = filler + data;
     }
     return data;

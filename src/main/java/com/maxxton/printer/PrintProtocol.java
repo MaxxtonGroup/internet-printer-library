@@ -5,8 +5,7 @@ package com.maxxton.printer;
  *
  * @author Hermans.S
  */
-public enum PrintProtocol
-{
+public enum PrintProtocol {
 
   /**
    * Raw printing
@@ -23,13 +22,11 @@ public enum PrintProtocol
 
   private final int port;
 
-  private PrintProtocol(int port)
-  {
+  private PrintProtocol(int port) {
     this.port = port;
   }
 
-  public int getPort()
-  {
+  public int getPort() {
     return port;
   }
 

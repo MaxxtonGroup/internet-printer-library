@@ -4,56 +4,52 @@ import com.maxxton.printer.PrintException;
 import com.maxxton.printer.Printer;
 import com.maxxton.printer.lpr.LPRCommand;
 import com.maxxton.printer.lpr.LPRDocument;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
  * JUnit tests for LPRPrintJob.
  * Check if print data is according to the LPR standard
- * 
+ *
  * Copyright Maxxton 2015
  *
+ * @author Hermans.s
  * @see PrintJob
  * @see https://www.ietf.org/rfc/rfc1179.txt
- *
- * @author Hermans.s
  */
-public class LPRPrintJobTest
-{
+public class LPRPrintJobTest {
 
   private Printer printer;
 
-  public LPRPrintJobTest()
-  {
+  public LPRPrintJobTest() {
   }
 
   @BeforeClass
-  public static void setUpClass()
-  {
+  public static void setUpClass() {
   }
 
   @AfterClass
-  public static void tearDownClass()
-  {
+  public static void tearDownClass() {
   }
 
   @Before
-  public void setUp()
-  {
+  public void setUp() {
     printer = new Printer("localhost");
   }
 
   @After
-  public void tearDown()
-  {
+  public void tearDown() {
   }
 
   /**
@@ -62,14 +58,13 @@ public class LPRPrintJobTest
    * Print Job header +----+-------+----+ | 02 | Queue | LF |
    * +----+-------+----+
    *
-   * @see https://www.ietf.org/rfc/rfc1179.txt
    * @throws PrintException
    * @throws UnsupportedEncodingException
    * @throws IOException
+   * @see https://www.ietf.org/rfc/rfc1179.txt
    */
   @Test
-  public void checkPrintJobHeader() throws PrintException, UnsupportedEncodingException, IOException
-  {
+  public void checkPrintJobHeader() throws PrintException, UnsupportedEncodingException, IOException {
     //Create document
     LPRDocument document = new LPRDocument("test document");
 
@@ -86,16 +81,11 @@ public class LPRPrintJobTest
     int command = printedBuffer[0];
     //Read queue
     ByteArrayOutputStream queue = new ByteArrayOutputStream();
-    for (int i = 1; i < printedBuffer.length; i++)
-    {
-      if (printedBuffer[i] == LPRCommand.LF.getCode())
-      {
+    for (int i = 1; i < printedBuffer.length; i++) {
+      if (printedBuffer[i] == LPRCommand.LF.getCode()) {
         break;
       }
-      queue.write(new byte[]
-      {
-        printedBuffer[i]
-      });
+      queue.write(new byte[] { printedBuffer[i] });
     }
 
     //Check command
@@ -117,13 +107,12 @@ public class LPRPrintJobTest
    * Data File: +----+-------+----+------+----+ | 03 | Count | SP | Name | LF |
    * +----+-------+----+------+----+ ...bytes...NULL
    *
-   * @see https://www.ietf.org/rfc/rfc1179.txt
    * @throws com.maxxton.printer.lpr.PrintException
    * @throws java.io.IOException
+   * @see https://www.ietf.org/rfc/rfc1179.txt
    */
   @Test
-  public void checkControlFileAndDataFile() throws PrintException, IOException
-  {
+  public void checkControlFileAndDataFile() throws PrintException, IOException {
     //Create document
     String documentText = "hello world";
     LPRDocument document = new LPRDocument("test document");
@@ -142,9 +131,9 @@ public class LPRPrintJobTest
 
     //Skip print job header
     int c;
-    while ((c = bufferIn.read()) != -1 && c != LPRCommand.LF.getCode());
-    if (c == -1)
-    {
+    while ((c = bufferIn.read()) != -1 && c != LPRCommand.LF.getCode())
+      ;
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
 
@@ -153,24 +142,20 @@ public class LPRPrintJobTest
     int cfCommand = bufferIn.read();
     //Read count
     ByteArrayOutputStream cfCountOut = new ByteArrayOutputStream();
-    while ((c = bufferIn.read()) != -1 && c != LPRCommand.SPACE.getCode())
-    {
+    while ((c = bufferIn.read()) != -1 && c != LPRCommand.SPACE.getCode()) {
       cfCountOut.write(c);
     }
-    if (c == -1)
-    {
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
     int cfCount = Integer.parseInt(new String(cfCountOut.toByteArray()));
 
     //Read name
     ByteArrayOutputStream cfNameOut = new ByteArrayOutputStream();
-    while ((c = bufferIn.read()) != -1 && c != LPRCommand.LF.getCode())
-    {
+    while ((c = bufferIn.read()) != -1 && c != LPRCommand.LF.getCode()) {
       cfNameOut.write(c);
     }
-    if (c == -1)
-    {
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
     String cfName = new String(cfNameOut.toByteArray());
@@ -191,8 +176,7 @@ public class LPRPrintJobTest
     //Read control file
     byte[] controlFile = new byte[cfCount];
     c = bufferIn.read(controlFile);
-    if (c == -1)
-    {
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
     System.out.println("Control file: ");
@@ -206,24 +190,20 @@ public class LPRPrintJobTest
     int dfCommand = bufferIn.read();
     //Read count
     ByteArrayOutputStream dfCountOut = new ByteArrayOutputStream();
-    while ((c = bufferIn.read()) != -1 && c != LPRCommand.SPACE.getCode())
-    {
+    while ((c = bufferIn.read()) != -1 && c != LPRCommand.SPACE.getCode()) {
       dfCountOut.write(c);
     }
-    if (c == -1)
-    {
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
     int dfCount = Integer.parseInt(new String(dfCountOut.toByteArray()));
 
     //Read name
     ByteArrayOutputStream dfNameOut = new ByteArrayOutputStream();
-    while ((c = bufferIn.read()) != -1 && c != LPRCommand.LF.getCode())
-    {
+    while ((c = bufferIn.read()) != -1 && c != LPRCommand.LF.getCode()) {
       dfNameOut.write(c);
     }
-    if (c == -1)
-    {
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
     String dfName = new String(dfNameOut.toByteArray());
@@ -240,8 +220,7 @@ public class LPRPrintJobTest
     //Read control file
     byte[] dataFile = new byte[dfCount];
     c = bufferIn.read(dataFile);
-    if (c == -1)
-    {
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
     System.out.println("Data file: ");

@@ -2,6 +2,7 @@ package com.maxxton.printer.lpr;
 
 import com.maxxton.printer.PrintDocument;
 import com.maxxton.printer.PrintFormatException;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
@@ -12,13 +13,11 @@ import java.nio.charset.Charset;
  *
  * @author Hermans.S Copyright Maxxton 2015
  */
-public class LPRDocument extends PrintDocument
-{
+public class LPRDocument extends PrintDocument {
 
   private CharacterSet charset = CharacterSet.NONE;
 
-  public LPRDocument(String documentName)
-  {
+  public LPRDocument(String documentName) {
     super(documentName);
   }
 
@@ -29,8 +28,7 @@ public class LPRDocument extends PrintDocument
    * @throws com.maxxton.printer.PrintFormatException
    */
   @Override
-  public void insert(String string) throws PrintFormatException
-  {
+  public void insert(String string) throws PrintFormatException {
     byte[] bytes = string.getBytes(charset.getCharset());
     insert(bytes);
   }
@@ -40,10 +38,8 @@ public class LPRDocument extends PrintDocument
    *
    * @param commands LPRCommand
    */
-  public void insert(LPRCommand... commands)
-  {
-    for (LPRCommand command : commands)
-    {
+  public void insert(LPRCommand... commands) {
+    for (LPRCommand command : commands) {
       insert(command.getCodes());
     }
   }
@@ -51,8 +47,7 @@ public class LPRDocument extends PrintDocument
   /**
    * Insert tab
    */
-  public void insertTab()
-  {
+  public void insertTab() {
     insert(LPRCommand.HT);
   }
 
@@ -62,10 +57,8 @@ public class LPRDocument extends PrintDocument
    * @param charset the new CharacterSet
    * @throws java.io.UnsupportedEncodingException
    */
-  public void insertCharacterset(CharacterSet charset) throws UnsupportedEncodingException
-  {
-    if (!Charset.isSupported(charset.getCharsetName()))
-    {
+  public void insertCharacterset(CharacterSet charset) throws UnsupportedEncodingException {
+    if (!Charset.isSupported(charset.getCharsetName())) {
       throw new UnsupportedEncodingException(charset.name());
     }
     this.charset = charset;
@@ -78,8 +71,7 @@ public class LPRDocument extends PrintDocument
    *
    * @return current characterset
    */
-  public CharacterSet getCurrentCharacterset()
-  {
+  public CharacterSet getCurrentCharacterset() {
     return charset;
   }
 
@@ -87,9 +79,16 @@ public class LPRDocument extends PrintDocument
    * Insert end of the document
    */
   @Override
-  public void insertDocumentEnd()
-  {
-    LPRDocument.this.insert(LPRCommand.LF, LPRCommand.LF, LPRCommand.LF, LPRCommand.LF, LPRCommand.LF, LPRCommand.LF, LPRCommand.GS_V);
+  public void insertDocumentEnd() {
+    LPRDocument.this.insert(
+        LPRCommand.LF,
+        LPRCommand.LF,
+        LPRCommand.LF,
+        LPRCommand.LF,
+        LPRCommand.LF,
+        LPRCommand.LF,
+        LPRCommand.GS_V
+    );
   }
 
 }

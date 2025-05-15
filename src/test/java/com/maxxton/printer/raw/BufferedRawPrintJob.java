@@ -4,6 +4,7 @@ import com.maxxton.printer.PrintDocument;
 import com.maxxton.printer.PrintException;
 import com.maxxton.printer.Printer;
 import com.maxxton.printer.PrinterConnection;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -16,14 +17,12 @@ import java.io.ByteArrayOutputStream;
  *
  * @author Hermans.S
  */
-public class BufferedRawPrintJob extends RawPrintJob
-{
+public class BufferedRawPrintJob extends RawPrintJob {
 
   private ByteArrayOutputStream buffer;
   private ByteArrayInputStream input;
 
-  public BufferedRawPrintJob(Printer printer, PrintDocument doc)
-  {
+  public BufferedRawPrintJob(Printer printer, PrintDocument doc) {
     super(printer, doc);
   }
 
@@ -35,8 +34,7 @@ public class BufferedRawPrintJob extends RawPrintJob
    * @throws PrintException
    */
   @Override
-  protected PrinterConnection connect(int port) throws PrintException
-  {
+  protected PrinterConnection connect(int port) throws PrintException {
     buffer = new ByteArrayOutputStream();
     input = new ByteArrayInputStream(new byte[0]);
 
@@ -48,8 +46,7 @@ public class BufferedRawPrintJob extends RawPrintJob
    *
    * @return Bytes that should be send to the printer
    */
-  public byte[] getBuffer()
-  {
+  public byte[] getBuffer() {
     return buffer.toByteArray();
   }
 

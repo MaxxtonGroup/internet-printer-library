@@ -4,55 +4,51 @@ import com.maxxton.printer.PrintException;
 import com.maxxton.printer.Printer;
 import com.maxxton.printer.lpr.LPRCommand;
 import com.maxxton.printer.lpr.LPRDocument;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
  * JUnit tests for SimpleLPRPrintJob.
- * 
+ *
  * Copyright Maxxton 2015
  *
+ * @author Hermans.s
  * @see PrintJob
  * @see https://www.ietf.org/rfc/rfc1179.txt
- *
- * @author Hermans.s
  */
-public class SimpleLPRPrintJobTest
-{
+public class SimpleLPRPrintJobTest {
 
   private Printer printer;
 
-  public SimpleLPRPrintJobTest()
-  {
+  public SimpleLPRPrintJobTest() {
   }
 
   @BeforeClass
-  public static void setUpClass()
-  {
+  public static void setUpClass() {
   }
 
   @AfterClass
-  public static void tearDownClass()
-  {
+  public static void tearDownClass() {
   }
 
   @Before
-  public void setUp()
-  {
+  public void setUp() {
     printer = new Printer("localhost");
   }
 
   @After
-  public void tearDown()
-  {
+  public void tearDown() {
   }
 
   /**
@@ -61,14 +57,13 @@ public class SimpleLPRPrintJobTest
    * Print Job header +----+-------+----+ | 02 | Queue | LF |
    * +----+-------+----+
    *
-   * @see https://www.ietf.org/rfc/rfc1179.txt
    * @throws PrintException
    * @throws UnsupportedEncodingException
    * @throws IOException
+   * @see https://www.ietf.org/rfc/rfc1179.txt
    */
   @Test
-  public void checkPrintJobHeader() throws PrintException, UnsupportedEncodingException, IOException
-  {
+  public void checkPrintJobHeader() throws PrintException, UnsupportedEncodingException, IOException {
     //Create document
     SimpleLPRDocument document = new SimpleLPRDocument("test document");
 
@@ -85,16 +80,11 @@ public class SimpleLPRPrintJobTest
     int command = printedBuffer[0];
     //Read queue
     ByteArrayOutputStream queue = new ByteArrayOutputStream();
-    for (int i = 1; i < printedBuffer.length; i++)
-    {
-      if (printedBuffer[i] == LPRCommand.LF.getCode())
-      {
+    for (int i = 1; i < printedBuffer.length; i++) {
+      if (printedBuffer[i] == LPRCommand.LF.getCode()) {
         break;
       }
-      queue.write(new byte[]
-      {
-        printedBuffer[i]
-      });
+      queue.write(new byte[] { printedBuffer[i] });
     }
 
     //Check command
@@ -116,13 +106,12 @@ public class SimpleLPRPrintJobTest
    * Data File: +----+-------+----+------+----+ | 03 | Count | SP | Name | LF |
    * +----+-------+----+------+----+ ...bytes...NULL
    *
-   * @see https://www.ietf.org/rfc/rfc1179.txt
    * @throws com.maxxton.printer.PrintException
    * @throws java.io.IOException
+   * @see https://www.ietf.org/rfc/rfc1179.txt
    */
   @Test
-  public void checkDataFile() throws PrintException, IOException
-  {
+  public void checkDataFile() throws PrintException, IOException {
     //Create document
     String documentText = "hello world";
     SimpleLPRDocument document = new SimpleLPRDocument("test document");
@@ -141,9 +130,9 @@ public class SimpleLPRPrintJobTest
 
     //Skip print job header
     int c;
-    while ((c = bufferIn.read()) != -1 && c != LPRCommand.LF.getCode());
-    if (c == -1)
-    {
+    while ((c = bufferIn.read()) != -1 && c != LPRCommand.LF.getCode())
+      ;
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
 
@@ -152,24 +141,20 @@ public class SimpleLPRPrintJobTest
     int dfCommand = bufferIn.read();
     //Read count
     ByteArrayOutputStream dfCountOut = new ByteArrayOutputStream();
-    while ((c = bufferIn.read()) != -1 && c != LPRCommand.SPACE.getCode())
-    {
+    while ((c = bufferIn.read()) != -1 && c != LPRCommand.SPACE.getCode()) {
       dfCountOut.write(c);
     }
-    if (c == -1)
-    {
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
     int dfCount = Integer.parseInt(new String(dfCountOut.toByteArray()));
 
     //Read name
     ByteArrayOutputStream dfNameOut = new ByteArrayOutputStream();
-    while ((c = bufferIn.read()) != -1 && c != LPRCommand.LF.getCode())
-    {
+    while ((c = bufferIn.read()) != -1 && c != LPRCommand.LF.getCode()) {
       dfNameOut.write(c);
     }
-    if (c == -1)
-    {
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
     String dfName = new String(dfNameOut.toByteArray());
@@ -186,8 +171,7 @@ public class SimpleLPRPrintJobTest
     //Read control file
     byte[] dataFile = new byte[dfCount];
     c = bufferIn.read(dataFile);
-    if (c == -1)
-    {
+    if (c == -1) {
       fail(); //Fail if end of stream  is reached
     }
     System.out.println("Data file: ");
