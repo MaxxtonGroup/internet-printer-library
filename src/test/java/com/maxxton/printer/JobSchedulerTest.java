@@ -2,11 +2,13 @@ package com.maxxton.printer;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -14,78 +16,64 @@ import static org.junit.Assert.*;
  *
  * Copyright Maxxton 2015
  *
- * @see PrintJobScheduler
  * @author Hermans.S
+ * @see PrintJobScheduler
  */
-public class JobSchedulerTest
-{
+public class JobSchedulerTest {
 
   private Printer printer1;
   private Printer printer2;
 
-  public JobSchedulerTest()
-  {
+  public JobSchedulerTest() {
   }
 
   @BeforeClass
-  public static void setUpClass()
-  {
+  public static void setUpClass() {
   }
 
   @AfterClass
-  public static void tearDownClass()
-  {
+  public static void tearDownClass() {
   }
 
   @Before
-  public void setUp()
-  {
+  public void setUp() {
     printer1 = new Printer("192.168.0.1");
-    printer1.addPrintListener(new PrintAdapter()
-    {
+    printer1.addPrintListener(new PrintAdapter() {
       @Override
-      public void printFailed(PrintEvent event, PrintException e)
-      {
+      public void printFailed(PrintEvent event, PrintException e) {
         e.printStackTrace();
       }
     });
     printer2 = new Printer("192.168.0.2");
-    printer2.addPrintListener(new PrintAdapter()
-    {
+    printer2.addPrintListener(new PrintAdapter() {
       @Override
-      public void printFailed(PrintEvent event, PrintException e)
-      {
+      public void printFailed(PrintEvent event, PrintException e) {
         e.printStackTrace();
       }
     });
   }
 
   @After
-  public void tearDown()
-  {
+  public void tearDown() {
   }
 
   /**
    * Test if the PrintJobScheduler executes PrintJobs that are scheduled
    */
   @Test
-  public void executeJob()
-  {
+  public void executeJob() {
     final List<Boolean> report = new ArrayList();
 
     //Create test job
-    PrintJob testJob = new PrintJob(printer1, null, PrintProtocol.RAW)
-    {
+    PrintJob testJob = new PrintJob(printer1, null, PrintProtocol.RAW) {
       @Override
-      public void print() throws PrintException
-      {
+      public void print() throws PrintException {
         //Notify to the report that job has run
         report.add(true);
       }
 
       @Override
-      public void execute(PrinterConnection printerConnection) throws Exception
-      {
+      public void execute(PrinterConnection printerConnection) throws Exception {
       }
     };
 
@@ -94,17 +82,14 @@ public class JobSchedulerTest
 
     //Wait for all jobs to finish
     int timeout = 1000;
-    while (PrintJobScheduler.getQueueSize(printer1) > 0)
-    {
-      try
-      {
+    while (PrintJobScheduler.getQueueSize(printer1) > 0) {
+      try {
         Thread.sleep(20);
-      } catch (InterruptedException e)
-      {
+      }
+      catch (InterruptedException e) {
       }
       timeout -= 20;
-      if (timeout == 0)
-      {
+      if (timeout == 0) {
         fail("timeout");
       }
     }
@@ -118,72 +103,60 @@ public class JobSchedulerTest
    * other
    */
   @Test
-  public void executeTwoJobs()
-  {
+  public void executeTwoJobs() {
     final List<Boolean> report = new ArrayList();
 
     //Create first job
-    PrintJob testJob1 = new PrintJob(printer1, null, PrintProtocol.RAW)
-    {
+    PrintJob testJob1 = new PrintJob(printer1, null, PrintProtocol.RAW) {
       @Override
-      public void print() throws PrintException
-      {
+      public void print() throws PrintException {
         //Check if other test has run
-        if (!report.isEmpty())
-        {
+        if (!report.isEmpty()) {
           report.add(false);
           System.err.println("job1 isn't first");
           return;
         }
-        try
-        {
+        try {
           Thread.sleep(50);
-        } catch (InterruptedException e)
-        {
+        }
+        catch (InterruptedException e) {
         }
 
-        if (report.isEmpty())
-        {
+        if (report.isEmpty()) {
           report.add(true);
-        } else
-        {
+        }
+        else {
           System.err.println("job1 hasn't finished first");
           report.add(false);
         }
       }
 
       @Override
-      public void execute(PrinterConnection printerConnection) throws Exception
-      {
+      public void execute(PrinterConnection printerConnection) throws Exception {
       }
     };
 
     //Create second job
-    PrintJob testJob2 = new PrintJob(printer1, null, PrintProtocol.RAW)
-    {
+    PrintJob testJob2 = new PrintJob(printer1, null, PrintProtocol.RAW) {
       @Override
-      public void print() throws PrintException
-      {
+      public void print() throws PrintException {
         //Check if other test has run
-        if (report.isEmpty())
-        {
+        if (report.isEmpty()) {
           report.add(false);
           System.err.println("job2 has started first");
           return;
         }
-        try
-        {
+        try {
           Thread.sleep(50);
-        } catch (InterruptedException e)
-        {
+        }
+        catch (InterruptedException e) {
         }
 
         report.add(true);
       }
 
       @Override
-      public void execute(PrinterConnection printerConnection) throws Exception
-      {
+      public void execute(PrinterConnection printerConnection) throws Exception {
       }
     };
 
@@ -193,17 +166,14 @@ public class JobSchedulerTest
 
     //Wait for all jobs to finish
     int timeout = 1000;
-    while (PrintJobScheduler.getQueueSize(printer1) > 0)
-    {
-      try
-      {
+    while (PrintJobScheduler.getQueueSize(printer1) > 0) {
+      try {
         Thread.sleep(20);
-      } catch (InterruptedException e)
-      {
+      }
+      catch (InterruptedException e) {
       }
       timeout -= 20;
-      if (timeout == 0)
-      {
+      if (timeout == 0) {
         fail("timeout");
       }
     }
@@ -220,97 +190,84 @@ public class JobSchedulerTest
    * other
    */
   @Test
-  public void executeTwoJobsForTwoPrinters()
-  {
+  public void executeTwoJobsForTwoPrinters() {
     final List<Boolean> report = new ArrayList();
 
     //Create first job
-    PrintJob testJob1 = new PrintJob(printer1, null, PrintProtocol.RAW)
-    {
+    PrintJob testJob1 = new PrintJob(printer1, null, PrintProtocol.RAW) {
       @Override
-      public void print() throws PrintException
-      {
+      public void print() throws PrintException {
         //Notify that this job has started
         report.add(true);
 
-        try
-        {
+        try {
           Thread.sleep(50);
-        } catch (InterruptedException e)
-        {
+        }
+        catch (InterruptedException e) {
         }
 
         //Check if other job is running but not finished
         boolean status = false;
-        if (report.size() < 2)
-        {
+        if (report.size() < 2) {
           System.err.println("Job 2 isn't started");
-        } else if (report.size() > 2)
-        {
+        }
+        else if (report.size() > 2) {
           System.err.println("Job 2 is already finished");
-        } else
-        {
+        }
+        else {
           status = true;
         }
 
-        try
-        {
+        try {
           Thread.sleep(50);
-        } catch (InterruptedException e)
-        {
+        }
+        catch (InterruptedException e) {
         }
 
         report.add(status);
       }
 
       @Override
-      public void execute(PrinterConnection printerConnection) throws Exception
-      {
+      public void execute(PrinterConnection printerConnection) throws Exception {
       }
     };
 
     //Create second job for different printer
-    PrintJob testJob2 = new PrintJob(printer2, null, PrintProtocol.RAW)
-    {
+    PrintJob testJob2 = new PrintJob(printer2, null, PrintProtocol.RAW) {
       @Override
-      public void print() throws PrintException
-      {
+      public void print() throws PrintException {
         //Notify that this job has started
         report.add(true);
 
-        try
-        {
+        try {
           Thread.sleep(50);
-        } catch (InterruptedException e)
-        {
+        }
+        catch (InterruptedException e) {
         }
 
         //Check if other job is running but not finished
         boolean status = false;
-        if (report.size() < 2)
-        {
+        if (report.size() < 2) {
           System.err.println("Job 1 isn't started");
-        } else if (report.size() > 2)
-        {
+        }
+        else if (report.size() > 2) {
           System.err.println("Job 1 is already finished");
-        } else
-        {
+        }
+        else {
           status = true;
         }
 
-        try
-        {
+        try {
           Thread.sleep(50);
-        } catch (InterruptedException e)
-        {
+        }
+        catch (InterruptedException e) {
         }
 
         report.add(status);
       }
 
       @Override
-      public void execute(PrinterConnection printerConnection) throws Exception
-      {
+      public void execute(PrinterConnection printerConnection) throws Exception {
       }
     };
 
@@ -320,17 +277,14 @@ public class JobSchedulerTest
 
     //Wait for all jobs to finish
     int timeout = 1000;
-    while (PrintJobScheduler.getQueueSize(printer1) > 0 && PrintJobScheduler.getQueueSize(printer2) > 0)
-    {
-      try
-      {
+    while (PrintJobScheduler.getQueueSize(printer1) > 0 && PrintJobScheduler.getQueueSize(printer2) > 0) {
+      try {
         Thread.sleep(20);
-      } catch (InterruptedException e)
-      {
+      }
+      catch (InterruptedException e) {
       }
       timeout -= 20;
-      if (timeout == 0)
-      {
+      if (timeout == 0) {
         fail("timeout");
       }
     }

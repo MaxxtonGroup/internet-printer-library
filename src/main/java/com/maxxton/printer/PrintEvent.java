@@ -5,33 +5,28 @@ package com.maxxton.printer;
  *
  * @author Hermans.S Copyright Maxxton 2015
  */
-public class PrintEvent
-{
+public class PrintEvent {
 
   private final Printer printer;
   private final PrintDocument document;
   private final PrintJob printJob;
 
-  public PrintEvent(Printer printer, PrintDocument document, PrintJob printJob)
-  {
+  public PrintEvent(Printer printer, PrintDocument document, PrintJob printJob) {
     this.printer = printer;
     this.document = document;
     this.printJob = printJob;
 
   }
 
-  public Printer getPrinter()
-  {
+  public Printer getPrinter() {
     return printer;
   }
 
-  public PrintDocument getDocument()
-  {
+  public PrintDocument getDocument() {
     return document;
   }
 
-  public PrintJob getPrintJob()
-  {
+  public PrintJob getPrintJob() {
     return printJob;
   }
 

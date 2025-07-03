@@ -11,8 +11,7 @@ import java.net.Socket;
  *
  * @author Hermans.S Copyright Maxxton 2015
  */
-public class PrinterConnection implements Closeable
-{
+public class PrinterConnection implements Closeable {
 
   private final InputStream inputStream;
   private final OutputStream outputStream;
@@ -24,8 +23,7 @@ public class PrinterConnection implements Closeable
    * @param socket Socket connection
    * @throws IOException
    */
-  public PrinterConnection(Socket socket) throws IOException
-  {
+  public PrinterConnection(Socket socket) throws IOException {
     this.socket = socket;
     this.inputStream = socket.getInputStream();
     this.outputStream = socket.getOutputStream();
@@ -37,41 +35,33 @@ public class PrinterConnection implements Closeable
    * @param in InputStream
    * @param out OutputStream
    */
-  public PrinterConnection(InputStream in, OutputStream out)
-  {
+  public PrinterConnection(InputStream in, OutputStream out) {
     socket = null;
     this.inputStream = in;
     this.outputStream = out;
   }
 
-  public InputStream getInputStream()
-  {
+  public InputStream getInputStream() {
     return inputStream;
   }
 
-  public OutputStream getOutputStream()
-  {
+  public OutputStream getOutputStream() {
     return outputStream;
   }
 
-  public Socket getSocket()
-  {
+  public Socket getSocket() {
     return socket;
   }
 
   @Override
-  public void close() throws IOException
-  {
-    if (inputStream != null)
-    {
+  public void close() throws IOException {
+    if (inputStream != null) {
       inputStream.close();
     }
-    if (outputStream != null)
-    {
+    if (outputStream != null) {
       outputStream.close();
     }
-    if (socket != null)
-    {
+    if (socket != null) {
       socket.close();
     }
   }

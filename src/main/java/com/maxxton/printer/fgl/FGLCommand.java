@@ -7,8 +7,7 @@ package com.maxxton.printer.fgl;
  *
  * @author Hermans.S
  */
-public enum FGLCommand
-{
+public enum FGLCommand {
 
   TEXT_ORIENTATION_PORTRET("NR"),
   TEXT_ORIENTATION_LANDSCAPE_INVERTED("PR"),
@@ -31,17 +30,16 @@ public enum FGLCommand
   FONT_HEIGHT_WIDTH("HW"),
   NEW_LINE("NR"),
   DOCUMENT_END("p"),
-  BOX_SIZE("BS"),;
+  BOX_SIZE("BS"),
+  ;
 
   private final String command;
 
-  private FGLCommand(String command)
-  {
+  private FGLCommand(String command) {
     this.command = command;
   }
 
-  public String getCode()
-  {
+  public String getCode() {
     return command;
   }
 

@@ -2,6 +2,7 @@ package com.maxxton.printer.fgl;
 
 import com.maxxton.printer.PrintFormatException;
 import com.maxxton.printer.PrintDocument;
+
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -16,8 +17,7 @@ import java.util.StringTokenizer;
  *
  * @author hermans.s
  */
-public class FGLDocument extends PrintDocument
-{
+public class FGLDocument extends PrintDocument {
 
   public static final int MAX_ROW_LENGTH = 31;
   public static final int MAX_ROW_COUNT = 9;
@@ -37,12 +37,10 @@ public class FGLDocument extends PrintDocument
   public static final int ROW_SIZE = 30;
   public static final int FONT_SIZE = 3;
 
-  public static final int[] FONT_WIDTHS =
-  {
+  public static final int[] FONT_WIDTHS = {
     7, 10, 20, 7, 7, 34, 20, 20, 13, 28, 26, 47, 20
   };
-  public static final int[] FONT_HEIGHTS =
-  {
+  public static final int[] FONT_HEIGHTS = {
     8, 18, 33, 11, 12, 56, 31, 33, 22, 41, 49, 91, 42
   };
 
@@ -56,13 +54,11 @@ public class FGLDocument extends PrintDocument
   private final int rowLength;
   private int currentRow = 0;
 
-  public FGLDocument(String documentName)
-  {
+  public FGLDocument(String documentName) {
     this(documentName, DEFAULT_FONT, DEFAULT_FONT_HEIGHT, DEFAULT_FONT_WIDTH, DEFAULT_ORIENTATION);
   }
 
-  public FGLDocument(String documentName, int font, int fontHeight, int fontWidth, FGLCommand orientation)
-  {
+  public FGLDocument(String documentName, int font, int fontHeight, int fontWidth, FGLCommand orientation) {
     super(documentName);
     this.font = font;
     this.fontHeight = fontHeight;
@@ -75,20 +71,16 @@ public class FGLDocument extends PrintDocument
   }
 
   @Override
-  public void insert(String text) throws PrintFormatException
-  {
+  public void insert(String text) throws PrintFormatException {
     String[] tickets = text.split("<p>");
-    for(int i = 0; i < tickets.length; i++)
-    {
+    for (int i = 0; i < tickets.length; i++) {
       String[] lines = tickets[i].split("\n|\\\\n");
       ArrayList<String> newLines = new ArrayList();
-      for (String line : lines)
-      {
+      for (String line : lines) {
         newLines.addAll(splitLargeLines(line, MAX_ROW_LENGTH));
       }
 
-      for (String newLine : newLines)
-      {
+      for (String newLine : newLines) {
         insert(orientation);
         insertFont(font);
         currentRow += SPACE_BETWEEN_ROW;
@@ -97,20 +89,17 @@ public class FGLDocument extends PrintDocument
         super.insert(newLine);
         insertNewLine();
       }
-      if(i +1 != tickets.length){
+      if (i + 1 != tickets.length) {
         super.insert("<p>");
       }
       currentRow = 0;
     }
   }
 
-  public void insert(FGLCommand command, String... args)
-  {
+  public void insert(FGLCommand command, String... args) {
     String cmnd = "<" + command.getCode();
-    for (int i = 0; i < args.length; i++)
-    {
-      if (i > 0)
-      {
+    for (int i = 0; i < args.length; i++) {
+      if (i > 0) {
         cmnd += ",";
       }
       cmnd += args[i];
@@ -119,21 +108,17 @@ public class FGLDocument extends PrintDocument
     super.insert(cmnd.getBytes());
   }
 
-  public void insertRowAndColumn(int row, int column)
-  {
+  public void insertRowAndColumn(int row, int column) {
     insert(FGLCommand.ROW_COLUMN, String.valueOf(row), String.valueOf(column));
   }
 
-  public void insertFontHeightWidht(int height, int width)
-  {
+  public void insertFontHeightWidht(int height, int width) {
     insert(FGLCommand.FONT_HEIGHT_WIDTH, String.valueOf(height), String.valueOf(width));
   }
 
-  public void insertFont(int font)
-  {
+  public void insertFont(int font) {
     FGLCommand fontCommand;
-    switch (font)
-    {
+    switch (font) {
       case 1:
         fontCommand = FGLCommand.FONT_1;
         break;
@@ -180,8 +165,7 @@ public class FGLDocument extends PrintDocument
   }
 
   @Override
-  public void insertNewLine()
-  {
+  public void insertNewLine() {
     insert(FGLCommand.NEW_LINE);
     super.insertNewLine();
   }
@@ -190,43 +174,36 @@ public class FGLDocument extends PrintDocument
    * Insert end of the document
    */
   @Override
-  public void insertDocumentEnd()
-  {
+  public void insertDocumentEnd() {
     insert(FGLCommand.DOCUMENT_END);
   }
 
-  private ArrayList<String> splitLargeLines(String line, int maxLength) throws PrintFormatException
-  {
+  private ArrayList<String> splitLargeLines(String line, int maxLength) throws PrintFormatException {
     StringTokenizer tokenizer = new StringTokenizer(line);
     String curLine = null;
     ArrayList<String> lines = new ArrayList();
-    while (tokenizer.hasMoreTokens())
-    {
+    while (tokenizer.hasMoreTokens()) {
       String word = tokenizer.nextToken();
-      if (word.length() > maxLength)
-      {
+      if (word.length() > maxLength) {
         throw new PrintFormatException("Max word length exceeded: " + word.length() + " (max: " + maxLength + ")");
       }
-      if (curLine == null)
-      {
+      if (curLine == null) {
         curLine = word;
-      } else
-      {
-        if (curLine.length() + 1 + word.length() > maxLength)
-        {
+      }
+      else {
+        if (curLine.length() + 1 + word.length() > maxLength) {
           lines.add(curLine);
           curLine = word;
-        } else
-        {
+        }
+        else {
           curLine += " " + word;
         }
       }
     }
-    if (curLine != null)
-    {
+    if (curLine != null) {
       lines.add(curLine);
     }
-    if(lines.isEmpty()){
+    if (lines.isEmpty()) {
       lines.add("");
     }
     return lines;

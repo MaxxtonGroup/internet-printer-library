@@ -9,13 +9,12 @@ import java.io.InputStream;
 
 /**
  * PrintDocument is the document to be printed
- * 
+ *
  * Copyright Maxxton 2015
  *
  * @author Hermans.S
  */
-public class PrintDocument
-{
+public class PrintDocument {
 
   private final String documentName;
   private final ByteArrayOutputStream buffer;
@@ -28,8 +27,7 @@ public class PrintDocument
    *
    * @param documentName Name of the document
    */
-  public PrintDocument(String documentName)
-  {
+  public PrintDocument(String documentName) {
     this.buffer = new ByteArrayOutputStream();
     this.dataStream = new DataOutputStream(buffer);
     this.documentName = documentName;
@@ -40,13 +38,11 @@ public class PrintDocument
    *
    * @param raw raw data
    */
-  public void insert(byte... raw)
-  {
-    try
-    {
+  public void insert(byte... raw) {
+    try {
       dataStream.write(raw);
-    } catch (IOException ex)
-    {
+    }
+    catch (IOException ex) {
     }
   }
 
@@ -54,16 +50,14 @@ public class PrintDocument
    * Insert Raw bytes
    *
    * @param raw bytes
-   * @param i   start point
-   * @param l   length
+   * @param i start point
+   * @param l length
    */
-  public void insert(byte[] raw, int i, int l)
-  {
-    try
-    {
+  public void insert(byte[] raw, int i, int l) {
+    try {
       dataStream.write(raw, i, l);
-    } catch (IOException ex)
-    {
+    }
+    catch (IOException ex) {
     }
   }
 
@@ -73,13 +67,11 @@ public class PrintDocument
    * @param string text
    * @throws com.maxxton.printer.PrintFormatException
    */
-  public void insert(String string) throws PrintFormatException
-  {
+  public void insert(String string) throws PrintFormatException {
     insert(string.getBytes());
   }
 
-  public void insert(char... characters)
-  {
+  public void insert(char... characters) {
     insert(new String(characters).getBytes());
   }
 
@@ -90,20 +82,17 @@ public class PrintDocument
    * @throws IOException
    * @throws com.maxxton.printer.PrintFormatException
    */
-  public void insert(InputStream in) throws IOException, PrintFormatException
-  {
+  public void insert(InputStream in) throws IOException, PrintFormatException {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     byte[] b = new byte[1024];
     int l;
-    while ((l = in.read(b)) != -1)
-    {
+    while ((l = in.read(b)) != -1) {
       bytes.write(b, 0, l);
     }
-    try
-    {
+    try {
       in.close();
-    } catch (IOException e)
-    {
+    }
+    catch (IOException e) {
     }
     String string = new String(bytes.toByteArray());
     insert(string);
@@ -116,16 +105,14 @@ public class PrintDocument
    * @throws IOException
    * @throws com.maxxton.printer.PrintFormatException
    */
-  public void insert(File file) throws IOException, PrintFormatException
-  {
+  public void insert(File file) throws IOException, PrintFormatException {
     insert(new FileInputStream(file));
   }
 
   /**
    * Insert linebreak
    */
-  public void insertNewLine()
-  {
+  public void insertNewLine() {
     insert('\n');
   }
 
@@ -135,8 +122,7 @@ public class PrintDocument
    * @param layout PrintLayout
    * @throws com.maxxton.printer.PrintFormatException
    */
-  public void insert(PrintLayout layout) throws PrintFormatException
-  {
+  public void insert(PrintLayout layout) throws PrintFormatException {
     insert(layout.toString());
   }
 
@@ -145,16 +131,14 @@ public class PrintDocument
    *
    * @param document sub PrintDocument
    */
-  public void insert(PrintDocument document)
-  {
+  public void insert(PrintDocument document) {
     insert(document.getRaw());
   }
 
   /**
    * Insert end of the document
    */
-  public void insertDocumentEnd()
-  {
+  public void insertDocumentEnd() {
   }
 
   /**
@@ -162,10 +146,8 @@ public class PrintDocument
    *
    * @param copies amount of copies
    */
-  public void setCopies(int copies)
-  {
-    if (copies <= 0)
-    {
+  public void setCopies(int copies) {
+    if (copies <= 0) {
       throw new IllegalArgumentException("Copies must be greater than 0");
     }
     this.copies = copies;
@@ -176,8 +158,7 @@ public class PrintDocument
    *
    * @return amount of copies
    */
-  public int getCopies()
-  {
+  public int getCopies() {
     return copies;
   }
 
@@ -186,8 +167,7 @@ public class PrintDocument
    *
    * @return name of the document
    */
-  public String getDocumentName()
-  {
+  public String getDocumentName() {
     return documentName;
   }
 
@@ -196,13 +176,12 @@ public class PrintDocument
    *
    * @return Byte array
    */
-  public byte[] getRaw()
-  {
+  public byte[] getRaw() {
     byte[] raw = buffer.toByteArray();
-    byte[] copied = new byte[raw.length*getCopies()];
-    for(int i = 0; i < raw.length; i++){
-      for(int j = 0; j < getCopies(); j++){
-        copied[raw.length*j + i] = raw[i];
+    byte[] copied = new byte[raw.length * getCopies()];
+    for (int i = 0; i < raw.length; i++) {
+      for (int j = 0; j < getCopies(); j++) {
+        copied[raw.length * j + i] = raw[i];
       }
     }
     return copied;
