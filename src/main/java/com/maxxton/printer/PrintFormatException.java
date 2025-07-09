@@ -7,26 +7,21 @@ package com.maxxton.printer;
  *
  * @author hermans.s
  */
-public class PrintFormatException extends PrintException
-{
+public class PrintFormatException extends PrintException {
 
-  public PrintFormatException()
-  {
+  public PrintFormatException() {
     super();
   }
 
-  public PrintFormatException(String msg)
-  {
+  public PrintFormatException(String msg) {
     super(msg);
   }
 
-  public PrintFormatException(Throwable e)
-  {
+  public PrintFormatException(Throwable e) {
     super(e);
   }
 
-  public PrintFormatException(String msg, Throwable e)
-  {
+  public PrintFormatException(String msg, Throwable e) {
     super(msg, e);
   }
 }

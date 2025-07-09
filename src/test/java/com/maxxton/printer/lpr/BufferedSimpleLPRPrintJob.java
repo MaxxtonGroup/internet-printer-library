@@ -3,6 +3,7 @@ package com.maxxton.printer.lpr;
 import com.maxxton.printer.PrintException;
 import com.maxxton.printer.Printer;
 import com.maxxton.printer.PrinterConnection;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -15,14 +16,12 @@ import java.io.ByteArrayOutputStream;
  *
  * @author Hermans.S
  */
-public class BufferedSimpleLPRPrintJob extends SimpleLPRPrintJob
-{
+public class BufferedSimpleLPRPrintJob extends SimpleLPRPrintJob {
 
   private ByteArrayOutputStream buffer;
   private ByteArrayInputStream input;
 
-  public BufferedSimpleLPRPrintJob(Printer printer, LPRDocument doc)
-  {
+  public BufferedSimpleLPRPrintJob(Printer printer, LPRDocument doc) {
     super(printer, doc);
   }
 
@@ -34,11 +33,9 @@ public class BufferedSimpleLPRPrintJob extends SimpleLPRPrintJob
    * @throws PrintException
    */
   @Override
-  protected PrinterConnection connect(int port) throws PrintException
-  {
+  protected PrinterConnection connect(int port) throws PrintException {
     buffer = new ByteArrayOutputStream();
-    input = new ByteArrayInputStream(new byte[]
-    {
+    input = new ByteArrayInputStream(new byte[] {
       0, 0, 0, 0, 0, 0, 0
     });
 
@@ -50,8 +47,7 @@ public class BufferedSimpleLPRPrintJob extends SimpleLPRPrintJob
    *
    * @return Bytes that should be send to the printer
    */
-  public byte[] getBuffer()
-  {
+  public byte[] getBuffer() {
     return buffer.toByteArray();
   }
 

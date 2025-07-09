@@ -13,11 +13,9 @@ import com.maxxton.printer.PrinterConnection;
  *
  * @author Hermans.S Copyright Maxxton 2015
  */
-public class SimpleLPRPrintJob extends LPRPrintJob
-{
+public class SimpleLPRPrintJob extends LPRPrintJob {
 
-  public SimpleLPRPrintJob(Printer printer, PrintDocument document)
-  {
+  public SimpleLPRPrintJob(Printer printer, PrintDocument document) {
     super(printer, document);
   }
 
@@ -28,8 +26,7 @@ public class SimpleLPRPrintJob extends LPRPrintJob
    * @throws Exception
    */
   @Override
-  public void execute(PrinterConnection printerConnection) throws Exception
-  {
+  public void execute(PrinterConnection printerConnection) throws Exception {
     // Create document
     byte[] rawDocument = getDocument().getRaw();
 

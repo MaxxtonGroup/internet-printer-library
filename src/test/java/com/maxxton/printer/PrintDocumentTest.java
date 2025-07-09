@@ -1,15 +1,18 @@
 package com.maxxton.printer;
 
 import com.maxxton.printer.lpr.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -17,43 +20,35 @@ import static org.junit.Assert.*;
  *
  * Copyright Maxxton 2015
  *
- * @see LPRDocument
- *
  * @author Hermans.S
+ * @see LPRDocument
  */
-public class PrintDocumentTest
-{
+public class PrintDocumentTest {
 
-  public PrintDocumentTest()
-  {
+  public PrintDocumentTest() {
   }
 
   @BeforeClass
-  public static void setUpClass()
-  {
+  public static void setUpClass() {
   }
 
   @AfterClass
-  public static void tearDownClass()
-  {
+  public static void tearDownClass() {
   }
 
   @Before
-  public void setUp()
-  {
+  public void setUp() {
   }
 
   @After
-  public void tearDown()
-  {
+  public void tearDown() {
   }
 
   /**
    * Test if bytes are inserted correctly
    */
   @Test
-  public void insertBytes()
-  {
+  public void insertBytes() {
     //Create new document
     LPRDocument doc = new LPRDocument("test doc");
 
@@ -72,14 +67,12 @@ public class PrintDocumentTest
    * Test if bytes are inserted correctly, with start position and length
    */
   @Test
-  public void insertBytesPosition()
-  {
+  public void insertBytesPosition() {
     //Create new document
     PrintDocument doc = new PrintDocument("test doc");
 
     //Insert bytes in the document
-    byte[] data = new byte[]
-    {
+    byte[] data = new byte[] {
       (byte) 0, (byte) 50, (byte) 150
     };
     doc.insert(data, 1, 1);
@@ -96,8 +89,7 @@ public class PrintDocumentTest
    * @throws java.io.IOException
    */
   @Test
-  public void insertFromInputstream() throws IOException, PrintFormatException
-  {
+  public void insertFromInputstream() throws IOException, PrintFormatException {
     //Create new document
     PrintDocument doc = new PrintDocument("test doc");
 
@@ -116,8 +108,7 @@ public class PrintDocumentTest
    * Test if linefeed is inserted correctly
    */
   @Test
-  public void insertLineFeed()
-  {
+  public void insertLineFeed() {
     //Create new document
     PrintDocument doc = new PrintDocument("test doc");
 
